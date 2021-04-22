@@ -14,6 +14,11 @@ const routes = [
     name: 'Owner',
     component: () => import('../views/Owner.vue') // set owner as path '/'
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue') // set owner as path '/'
+  },
 ]
 
 const router = new VueRouter({
