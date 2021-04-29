@@ -1,0 +1,59 @@
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: shabu
+-- ------------------------------------------------------
+-- Server version	8.0.22
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `sales`
+--
+
+DROP TABLE IF EXISTS `sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales` (
+  `sale_id` int NOT NULL AUTO_INCREMENT,
+  `date` date DEFAULT NULL,
+  `income` float(8,2) DEFAULT NULL,
+  `emp_id` int NOT NULL,
+  `cus_id` int NOT NULL,
+  PRIMARY KEY (`sale_id`),
+  UNIQUE KEY `sale_id_UNIQUE` (`sale_id`),
+  KEY `employees.emp_id_idx` (`emp_id`),
+  KEY `sales.customer.cus_id.fk1_idx` (`cus_id`),
+  CONSTRAINT `sales.customer.cus_id.fk1` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`),
+  CONSTRAINT `sales.employees.emp_id.fk2` FOREIGN KEY (`emp_id`) REFERENCES `employees` (`emp_id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sales`
+--
+
+LOCK TABLES `sales` WRITE;
+/*!40000 ALTER TABLE `sales` DISABLE KEYS */;
+INSERT INTO `sales` VALUES (1,'2021-04-16',213.00,2,102),(2,'2021-02-17',212.00,1,103),(3,'2021-04-18',302.00,4,107),(4,'2021-04-18',255.00,3,108),(5,'2021-04-19',315.00,5,102),(6,'2021-04-19',242.00,2,107),(7,'2021-04-19',306.00,6,108),(8,'2021-04-20',318.00,7,109),(9,'2021-04-21',432.00,9,110),(10,'2021-04-21',492.00,8,111),(11,'2021-04-22',145.00,9,102),(12,'2021-04-22',200.00,10,109),(13,'2021-04-23',117.00,10,108),(14,'2021-04-23',215.00,4,110),(15,'2021-04-24',268.00,6,110);
+/*!40000 ALTER TABLE `sales` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-04-29 22:10:35
