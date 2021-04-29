@@ -10,9 +10,9 @@ const routes = [
     component: () => import('../views/Home.vue') // set home as path '/'
   },
   {
-    path: '/owner',
-    name: 'Owner',
-    component: () => import('../views/Owner.vue') // set owner as path '/'
+    path: '/manager',
+    name: 'Manager',
+    component: () => import('../views/Manager.vue') // set owner as path '/'
   },
   {
     path: '/login',
