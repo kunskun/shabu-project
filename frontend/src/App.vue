@@ -33,7 +33,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 .button{
   background-color:#31525b;
