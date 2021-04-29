@@ -2,7 +2,7 @@
   <div class="container is-widescreen">
     <section class="hero">
       <div class="hero-body">
-        <p class="title">My Stories</p>
+        <p class="title">Home + login</p>
       </div>
     </section>
     <section class="section" id="app">

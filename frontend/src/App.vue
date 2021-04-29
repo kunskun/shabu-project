@@ -1,9 +1,9 @@
 <template>
-  <div id="app" style="margin:10px">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="https://bulma.io">
-      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+  <div id="app" style="margin-top:0px">
+    <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color:#ffa101;">
+  <div class="navbar-brand" style="background-color:#ffa101;">
+    <a class="navbar-item" href="http://localhost:8080/" >
+      <img src="./assets/logo.png" width="112" height="28">
     </a>
 
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
