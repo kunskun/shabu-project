@@ -24,6 +24,11 @@ const routes = [
     name: 'pointofsell',
     component: () => import('../views/Pos.vue') // set owner as path '/'
   },
+  {
+    path: '/ordermenu',
+    name: 'ordermenu',
+    component: () => import('../views/Ordermenu.vue') // set owner as path '/'
+  },
 ]
 
 const router = new VueRouter({

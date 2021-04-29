@@ -1,48 +1,44 @@
 <template>
   <section id="app">
-    <div class="columns">
-      <div class="column is-2 py-6 ">  
-        <header class="card-header ">
-          <p class="card-header-icon has-text-link-dark">
-            <span class="card-header-icon icon">
-              <i class="fas fa-utensils"></i>
-            </span>
-          </p>
-          <p class="card-header-title has-text-primary-dark title is-3">Shabu Bulma</p>
-        </header>
+    <div class="columns orange">
+      <div class="column is-2 py-5 pl-5">  
+        <!-- <header class="card-header pb-5 orange">
+          <img src="../assets/logo.png" alt="" width="100%">
+        </header> -->
 
         <!-- item bar -->
-        <template>      
-          <div class="button is-full is-primary box my-0">
+        <template>
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'sales' ? false:true}" @click="selectSite = 'sales'">
+            <span class="title is-6">Sales</span>
+          </div>      
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'material' ? false:true}" @click="selectSite = 'material'">
             <span class="title is-6">Material</span>
           </div>
-          <div class="button is-full is-primary box my-0 is-light">
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'menu' ? false:true}" @click="selectSite = 'menu'">
             <span class="title is-6">Menu</span>
           </div>
-          <div class="button is-full is-primary box my-0 is-light">
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'order' ? false:true}" @click="selectSite = 'order'">
             <span class="title is-6">Order</span>
           </div>
-          <div class="button is-full is-primary box my-0 is-light">
-            <span class="title is-6">Promotion</span>
-          </div>
-          <div class="button is-full is-primary box my-0 is-light">
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'supplier' ? false:true}" @click="selectSite = 'supplier'">
             <span class="title is-6">Suplier</span>
           </div>
-          <div class="button is-full is-primary box my-0 is-light">
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'employee' ? false:true}" @click="selectSite = 'employee'">
             <span class="title is-6">Employees</span>
           </div>
-          <div class="button is-full is-primary box my-0 is-light">
-            <span class="title is-6">Account</span>
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'day' ? false:true}" @click="selectSite = 'day'">
+            <span class="title is-6">Day Account</span>
           </div>
-          <div class="button is-full is-primary box my-0 is-light">
-            <span class="title is-6">Sales</span>
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'month' ? false:true}" @click="selectSite = 'month'">
+            <span class="title is-6">Month Account</span>
           </div>
+          
         </template>
       </div>
 
       <div class="column is-10 px-4  has-background-light is-rounded">
         <!-- Sales -->
-        <div class="column is-full my-6">
+        <div class="column is-full my-6" v-if="selectSite === 'sales'">
           <h1 class="title is-4">Sales</h1>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
@@ -83,13 +79,13 @@
             </tfoot>
           </table>
         </div>
-        <div class="is-full has-text-right pr-4">
+        <!-- <div class="is-full has-text-right pr-4">
           <button class="button is-outlined mr-4">Delete</button>
           <button class="button is-primary">Add</button>
-        </div>
+        </div> -->
         
         <!-- Order -->
-        <div class="column is-full my-6">
+        <div class="column is-full my-6" v-if="selectSite === 'order'">
           <h1 class="title is-4">Order</h1>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
@@ -125,7 +121,7 @@
         </div>
 
         <!-- Material -->
-        <div class="column is-full my-6">
+        <div class="column is-full my-6" v-if="selectSite === 'material'">
           <h1 class="title is-4">Material</h1>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
@@ -160,8 +156,51 @@
           </table>
         </div>
 
+        <!-- Menu -->
+        <div class="column is-full my-6" v-if="selectSite === 'menu'">
+          <h1 class="title is-4">Menu</h1>
+          <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th class="is-2">Image</th>
+                <th class="is-1">ID</th>
+                <th class="is-2">Name</th>
+                <th class="is-2">Price</th>
+                <th class="is-2">Cost</th>
+                <th class="is-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td>1</td>
+                <td>Cucumber</td>
+                <td>0</td>
+                <td>20.00 </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>2</td>
+                <td>Cucumber</td>
+                <td>0</td>
+                <td>20.00 </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>3</td>
+                <td>Cucumber</td>
+                <td>0</td>
+                <td>20.00 </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <!-- Month Account -->
-        <div class="column is-full mx-1 my-6">
+        <div class="column is-full mx-1 my-6" v-if="selectSite === 'month'">
           <h1 class="title is-4">Month Account</h1>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
@@ -198,8 +237,8 @@
         </div>
 
         <!-- Day Account -->
-        <div class="column is-full mx-1 my-6">
-          <h1 class="title is-4">Day Account for ...</h1>
+        <div class="column is-full mx-1 my-6" v-if="selectSite === 'day'">
+          <h1 class="title is-4">Day Account</h1>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
               <tr>
@@ -243,7 +282,7 @@
         </div>
 
         <!-- Suplier -->
-        <div class="column is-full mx-1 my-6">
+        <div class="column is-full mx-1 my-6" v-if="selectSite === 'supplier'">
           <h1 class="title is-4">Supplier</h1>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
@@ -270,7 +309,7 @@
         </div>
         
         <!-- Employees -->
-        <div class="column is-full mx-1 my-6">
+        <div class="column is-full mx-1 my-6" v-if="selectSite === 'employee'">
           <h1 class="title is-4">Employees</h1>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
@@ -311,7 +350,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      selectSite: 'sales',
+    };
   },
 };
 </script>
@@ -319,6 +360,12 @@ export default {
 <style scoped>
   tr{
     line-height: 3rem;
+  }
+  .orange{
+    background-color: #FFA101;
+  }
+  .light-orange{
+    background-color: #FAE6B1;
   }
 
 </style>
