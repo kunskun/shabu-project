@@ -8,31 +8,32 @@
 
         <!-- item bar -->
         <template>
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'sales' ? false:true}" @click="selectSite = 'sales'">
-            <span class="title is-6">Sales</span>
-          </div>      
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'materials' ? false:true}" @click="selectSite = 'materials'">
-            <span class="title is-6">Material</span>
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'sales' ? false:true}" @click="getItems(selectSite = 'sales')">
+            <span class="title is-6">Order Food</span>
           </div>
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'menu' ? false:true}" @click="selectSite = 'menu'">
-            <span class="title is-6">Menu</span>
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'orders' ? false:true}" @click="getItems(selectSite = 'orders')">
+            <span class="title is-6">Order Material</span>
           </div>
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'orders' ? false:true}" @click="selectSite = 'orders'">
-            <span class="title is-6">Order</span>
-          </div>
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'supplier' ? false:true}" @click="selectSite = 'supplier'">
-            <span class="title is-6">Suplier</span>
-          </div>
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'employees' ? false:true}" @click="selectSite = 'employees'">
-            <span class="title is-6">Employees</span>
-          </div>
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'day_account' ? false:true}" @click="selectSite = 'day_account'">
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'day_account' ? false:true}" @click="getItems(selectSite = 'day_account')">
             <span class="title is-6">Day Account</span>
           </div>
-          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'month_account' ? false:true}" @click="selectSite = 'month_account'">
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'month_account' ? false:true}" @click="getItems(selectSite = 'month_account')">
             <span class="title is-6">Month Account</span>
+          </div>      
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'materials' ? false:true}" @click="getItems(selectSite = 'materials')">
+            <span class="title is-6">Material</span>
           </div>
-          {{blogs}}
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'menu' ? false:true}" @click="getItems(selectSite = 'menu')">
+            <span class="title is-6">Menu</span>
+          </div>
+          
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'supplier' ? false:true}" @click="getItems(selectSite = 'supplier')">
+            <span class="title is-6">Supplier</span>
+          </div>
+          <div class="button is-full box my-3 is-rounded is-light" :class="{'light-orange': selectSite === 'employees' ? false:true}" @click="getItems(selectSite = 'employees')">
+            <span class="title is-6">Employees</span>
+          </div>
+          
         </template>
       </div>
 
@@ -44,7 +45,7 @@
             <div class="column is-full">
               <p class="title is-4 has-text-left">Sales
               <span style="float: right">
-                <button class="button is-primary" @click="getItems">Add new record</button>
+                <button class="button is-primary" >Add new record</button>
                 <button class="button is-danger ml-3">Delete</button>
               </span>
               </p>
@@ -59,95 +60,11 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>2021-04-16</td>
-                <td>213.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>2021-04-17</td>
-                <td>212.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>2021-04-18</td>
-                <td>302.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>2021-04-18</td>
-                <td>255.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>2021-04-19</td>
-                <td>315.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>2021-04-19</td>
-                <td>242.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>2021-04-19</td>
-                <td>306.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>8</td>
-                <td>2021-04-20</td>
-                <td>318.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>9</td>
-                <td>2021-04-21</td>
-                <td>432.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td>2021-04-21</td>
-                <td>492.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>11</td>
-                <td>2021-04-22</td>
-                <td>145.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>12</td>
-                <td>2021-04-22</td>
-                <td>200.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>13</td>
-                <td>2021-04-23</td>
-                <td>117.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>14</td>
-                <td>2021-04-23</td>
-                <td>215.00 </td>
-                <td><i class="fa fa-edit"></i></td>
-              </tr>
-              <tr>
-                <td>15</td>
-                <td>2021-04-24</td>
-                <td>268.00 </td>
+            <tbody>             
+              <tr v-for="sale in blogs" :key="sale.sale_id">
+                <td>{{ sale.sale_id }}</td>
+                <td>{{ sale.date.substring(0,10) }}</td>
+                <td>{{ sale.income.toFixed(2) }}</td>
                 <td><i class="fa fa-edit"></i></td>
               </tr>
             </tbody>
@@ -155,20 +72,21 @@
                 <tr>
                     <th></th>
                     <th></th>
-                    <th>Sum : 4073.00</th>
+                    <th>Sum : {{ sumSales }}</th>
                     <th></th>
                 </tr>
             </tfoot>
           </table>
         </div>
-        <!-- <div class="is-full has-text-right pr-4">
-          <button class="button is-outlined mr-4">Delete</button>
-          <button class="button is-primary">Add</button>
-        </div> -->
         
         <!-- Order -->
         <div class="column is-full my-5" v-if="selectSite === 'orders'">
-          <h1 class="title is-4 has-text-left">Order</h1>
+          <p class="title is-4 has-text-left">Order Material
+              <span style="float: right">
+                <button class="button is-primary" >Add new record</button>
+                <button class="button is-danger ml-3">Delete</button>
+              </span>
+          </p>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
               <tr>
@@ -180,23 +98,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>2020-01-01</td>
-                <td>Cucumber</td>
-                <td>19</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>2020-01-01</td>
-                <td>chicken</td>
-                <td>6</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>2020-01-01</td>
-                <td>Cola</td>
-                <td>2</td>
+              <tr v-for="order in blogs" :key="order.order_id">
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.buy_date.substring(0,10) }}</td>
+                <td>{{ order.mats_name }}</td>
+                <td>{{ order.unit }}</td>
               </tr>
             </tbody>
           </table>
@@ -204,7 +110,12 @@
 
         <!-- Material -->
         <div class="column is-full my-5" v-if="selectSite === 'materials'">
-          <h1 class="title is-4 has-text-left">Material</h1>
+          <p class="title is-4 has-text-left">Material
+              <span style="float: right">
+                <button class="button is-primary" >Add new record</button>
+                <button class="button is-danger ml-3">Delete</button>
+              </span>
+          </p>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
               <tr>
@@ -212,27 +123,14 @@
                 <th>Name</th>
                 <th>Material Left</th>
                 <th>Price</th>
-                <!-- <th>Table no.</th> -->
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Cucumber</td>
-                <td class="has-text-danger">0</td>
-                <td>20.00 </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Chicken</td>
-                <td>14</td>
-                <td>150.00 </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Cola</td>
-                <td>18</td>
-                <td>12.00 </td>
+              <tr v-for="mat in blogs" :key="mat.mats_id">
+                <td>{{ mat.mats_id }}</td>
+                <td>{{ mat.mats_name }}</td>
+                <td :class="{'has-text-danger': mat.mats_left < 5 }">{{ mat.mats_left }}</td>
+                <td>{{ mat.price.toFixed(2) }} </td>
               </tr>
             </tbody>
           </table>
@@ -240,42 +138,31 @@
 
         <!-- Menu -->
         <div class="column is-full my-5" v-if="selectSite === 'menu'">
-          <h1 class="title is-4 has-text-left">Menu</h1>
+          <p class="title is-4 has-text-left">Menu
+              <span style="float: right">
+                <button class="button is-primary" >Add new record</button>
+                <button class="button is-danger ml-3">Delete</button>
+              </span>
+          </p>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
               <tr>
-                <th class="is-2">Image</th>
-                <th class="is-1">ID</th>
-                <th class="is-2">Name</th>
-                <th class="is-2">Price</th>
-                <th class="is-2">Cost</th>
-                <th class="is-3">Description</th>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Cost</th>
+                <th>Description</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td></td>
-                <td>1</td>
-                <td>Cucumber</td>
-                <td>0</td>
-                <td>20.00 </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>2</td>
-                <td>Cucumber</td>
-                <td>0</td>
-                <td>20.00 </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>3</td>
-                <td>Cucumber</td>
-                <td>0</td>
-                <td>20.00 </td>
-                <td></td>
+              <tr v-for="menu in blogs" :key="menu.menu_id">
+                <td>{{ menu.menu_id }}</td>
+                <td><img :src="menu.image" :alt="menu.menu_name"></td>
+                <td>{{ menu.menu_name }}</td>
+                <td>{{ menu.sale_price.toFixed(2) }}</td>
+                <td>{{ menu.mats_cost.toFixed(2) }}</td>
+                <td>{{ menu.description }}</td>
               </tr>
             </tbody>
           </table>
@@ -283,7 +170,12 @@
 
         <!-- Month Account -->
         <div class="column is-full mx-1 my-5" v-if="selectSite === 'month_account'">
-          <h1 class="title is-4 has-text-left">Month Account</h1>
+          <p class="title is-4 has-text-left">Month Account
+              <span style="float: right">
+                <button class="button is-primary" >Add new record</button>
+                <button class="button is-danger ml-3">Delete</button>
+              </span>
+          </p>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
               <tr>
@@ -294,17 +186,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Jan</td>
-                <td>Buy DB</td>
-                <td class="has-text-danger">15.00 </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>May</td>
-                <td>Buy Console</td>
-                <td class="has-text-danger">200.00 </td>
+              <tr v-for="month in blogs" :key="month.acc_id">
+                <td>{{ month.acc_id }}</td>
+                <td>{{ month.acc_month }}</td>
+                <td>{{ month.title_exp }}</td>
+                <td>{{ month.amount_exp.toFixed(2) }} </td>
               </tr>
             </tbody>
             <tfoot>
@@ -312,7 +198,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th>Sum</th>
+                <th>Sum : {{ sumMonthExp }}</th>
               </tr>
             </tfoot>
           </table>
@@ -320,7 +206,12 @@
 
         <!-- Day Account -->
         <div class="column is-full mx-1 my-5" v-if="selectSite === 'day_account'">
-          <h1 class="title is-4 has-text-left">Day Account</h1>
+          <p class="title is-4 has-text-left">Day Account
+              <span style="float: right">
+                <button class="button is-primary" >Add new record</button>
+                <button class="button is-danger ml-3">Delete</button>
+              </span>
+          </p>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
               <tr>
@@ -333,31 +224,22 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>01</td>
-                <td class="has-text-success">300.00 </td>
-                <td class="has-text-danger">150.00 </td>
-                <td>0.00 </td>
-                <td>150.00 </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>05</td>
-                <td class="has-text-success">160.00 </td>
-                <td class="has-text-danger">200.00 </td>
-                <td>20.00 </td>
-                <td class="has-text-danger">-20.00 </td>
+              <tr v-for="day in blogs" :key="day.acc_id">
+                <td>{{ day.acc_id }}</td>
+                <td>{{ day.acc_date.substring(8,10) }}</td>
+                <td class="has-text-success">{{ day.sale_income.toFixed(2) }} </td>
+                <td class="has-text-danger">{{ day.mats_expense.toFixed(2) }} </td>
+                <td>{{ day.tip.toFixed(2) }}</td>
+                <td>{{ day.balance.toFixed(2) }}</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <th></th>
-                <th></th>
-                <th>Sum : 460.00</th>
-                <th>Sum : 350.00</th>
-                <th>Sum : 20.00</th>
-                <th>Sum : 130.00</th>
+                <th colspan="2" class="has-text-left pl-5">Sum</th>
+                <th>{{ sumDayIncome }}</th>
+                <th>{{ sumDayExp }}</th>
+                <th>{{ sumDayTip }}</th>
+                <th>{{ sumDayBalance }}</th>
               </tr>
             </tfoot>
           </table>
@@ -378,13 +260,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>SOS Cucumber</td>
-                <td>088-888-8888</td>
-                <td>Cucumber</td>
-                <td>40</td>
-                <td>5.00 </td>
+              <tr v-for="sup in blogs" :key="sup.sup_id">
+                <td>{{ sup.sup_id }}</td>
+                <td>{{ sup.sup_name }}</td>
+                <td>{{ sup.phone }}</td>
+                <td>{{ sup.mats_name }}</td>
+                <td>{{ sup.unit }}</td>
+                <td>{{ sup.total_price }} </td>
               </tr>
             </tbody>
           </table>
@@ -392,34 +274,31 @@
         
         <!-- Employees -->
         <div class="column is-full mx-1 my-5" v-if="selectSite === 'employees'">
-          <h1 class="title is-4 has-text-left">Employees</h1>
+          <p class="title is-4 has-text-left">Employees
+              <span style="float: right">
+                <button class="button is-primary" >Add new record</button>
+                <button class="button is-danger ml-3">Delete</button>
+              </span>
+          </p>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Phone</th>
+                <!-- <th>Phone</th> -->
                 <th>Salary</th>
                 <th>Position</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>A</td>
-                <td>Lert</td>
-                <td>011-111-1111</td>
-                <td>15,000</td>
-                <td>Chief</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>B</td>
-                <td>Udom</td>
-                <td>012-122-2222</td>
-                <td>13,000</td>
-                <td>Cashier</td>
+              <tr v-for="emp in blogs" :key="emp.emp_id">
+                <td>{{ emp.emp_id }}</td>
+                <td>{{ emp.fname }}</td>
+                <td>{{ emp.lname }}</td>
+                <!-- <td></td> -->
+                <td>{{ emp.salary }}</td>
+                <td>{{ emp.position }}</td>
               </tr>
             </tbody>
           </table>
@@ -435,6 +314,7 @@ import axios from "axios";
 
 export default {
   name: 'manager',
+  month_list: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   data() {
     return {
       selectSite: 'sales',
@@ -447,15 +327,47 @@ export default {
   methods: {
     getItems() {
       axios
-        .get("http://localhost:3000/manager/"+this.selectSite, {test: 'It\'s OK!!'})
-        // .then((response) => {
-        //   console.log(response);
-        //   this.blogs = response.data;
-        // })
-        // .catch((err) => {
-        //   console.log(err);
-        // });
+        .get("http://localhost:3000/manager/"+this.selectSite)
+        .then((response) => {
+          console.log(response);
+          this.blogs = response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
+  },
+  computed: {
+    sumSales() {
+      var sum = 0
+      this.blogs.forEach(val => sum += val.income);
+      return sum.toFixed(2)
+    },
+    sumMonthExp() {
+      var sum = 0
+      this.blogs.forEach(val => sum += val.amount_exp);
+      return sum.toFixed(2)
+    },
+    sumDayIncome() {
+      var sum = 0
+      this.blogs.forEach(val => sum += val.sale_income);
+      return sum.toFixed(2)
+    },
+    sumDayExp() {
+      var sum = 0
+      this.blogs.forEach(val => sum += val.mats_expense);
+      return sum.toFixed(2)
+    },
+    sumDayTip() {
+      var sum = 0
+      this.blogs.forEach(val => sum += val.tip);
+      return sum.toFixed(2)
+    },
+    sumDayBalance() {
+      var sum = 0
+      this.blogs.forEach(val => sum += val.balance);
+      return sum.toFixed(2)
+    }
   },
 };
 </script>
