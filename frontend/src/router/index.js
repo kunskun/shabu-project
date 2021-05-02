@@ -29,6 +29,11 @@ const routes = [
     name: 'ordermenu',
     component: () => import('../views/Ordermenu.vue') // set owner as path '/'
   },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('../views/Signup.vue') // set owner as path '/'
+  },
 ]
 
 const router = new VueRouter({

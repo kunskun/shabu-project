@@ -30,7 +30,7 @@
         <button class="button is-primary is-fullwidth" @click="submit()">Login</button>
 
         <p class="my-3 has-text-dark has-text-left">
-          Don't have an account yet? <a href="/signup.html">Sign up</a>
+          ยังไม่ได้เป็นสมาชิกใช่ไหม? <a href="/signup.html">Sign up</a>
         </p>
       </div>
     </div>
