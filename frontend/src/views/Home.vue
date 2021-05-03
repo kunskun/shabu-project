@@ -54,7 +54,10 @@ export default {
       if(this.username == 'exCustomer'){
         this.$router.push({ path: "/ordermenu" });
       }
-      if(this.username == 'exEmployees'){
+      if(this.username == 'exManager'){
+        this.$router.push({ path: "/manager" });
+      }
+      if(this.username == 'exEmployee'){
         this.$router.push({ path: "/manager" });
       }
     }
