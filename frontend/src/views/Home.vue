@@ -30,7 +30,9 @@
         <button class="button is-primary is-fullwidth" @click="submit()">Login</button>
 
         <p class="my-3 has-text-dark has-text-left">
-          ยังไม่ได้เป็นสมาชิกใช่ไหม? <a href="/signup.html">Sign up</a>
+          ยังไม่ได้เป็นสมาชิกใช่ไหม? <router-link to="/signup">
+              signup
+            </router-link>
         </p>
       </div>
     </div>
@@ -38,11 +40,26 @@
 </template>
 
 <script>
+// @ is an alias to /src
 export default {
-    data() {
-      return {}
+  data() {
+    return {
+      username: "",
+      password: "",
+      error: "",
+    };
+  },
+  methods: {
+    submit(){
+      if(this.username == 'exCustomer'){
+        this.$router.push({ path: "/ordermenu" });
+      }
+      if(this.username == 'exEmployees'){
+        this.$router.push({ path: "/manager" });
+      }
     }
   }
+}
 </script>
 
 <style scoped>

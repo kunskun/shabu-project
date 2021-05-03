@@ -11,13 +11,13 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <div class="buttons">
-          <a class="button" style="background-color:#31525b;color:white;">
-            เข้าสู่ระบบ
-          </a>
-          <a class="button" style="background-color:#fae681;">
-            สมัครสมาชิก
-          </a>
+        <div class="buttons" >
+           <router-link to="/" class="button" style="background-color:#31525b;color:white;">
+              เข้าสู่ระบบ
+            </router-link>
+            <router-link to="/signup" class="button" style="background-color:#fae681;">
+              สมัครสมาชิก
+            </router-link>
         </div>
       </div>
     </div>

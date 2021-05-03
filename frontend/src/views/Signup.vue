@@ -140,7 +140,9 @@
 
           <button class="button is-primary is-fullwidth">Sign Up</button>
 
-          <p class="my-3 has-text-dark has-text-left">เคยสมัครไว้แล้วเหรอ? <a href="#">Login</a></p>
+          <p class="my-3 has-text-dark has-text-left">เคยสมัครไว้แล้วเหรอ? <router-link to="/">
+              Login
+            </router-link></p>
         </div>
       </div>
     </div>
