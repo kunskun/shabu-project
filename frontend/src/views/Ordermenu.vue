@@ -3,7 +3,7 @@
     <div class="columns">
       <!-- Column แสดงสินค้า--------------------------------------------------------->
       <div class="column is-8 pt-6">
-        <h1 class="is-size-4 mb-4">Menu</h1>
+        <h1 class="is-size-4 mb-4 has-text-dark">All Menu</h1>
         <div class="container is-max-desktop">
           <div class="is-multiline columns is-variable is-2">
             <!-- Card element start here------------------------------------------>
@@ -30,7 +30,10 @@
                           </p>
                         </div>
                         <div class="column">
-                          <div class="icon is-size-4" @click="addToOrder(item.menu_id)">
+                          <div
+                            class="icon is-size-4"
+                            @click="addToOrder(item.menu_id)"
+                          >
                             <i class="fa fa-shopping-cart has-text-info"></i>
                           </div>
                         </div>
@@ -47,8 +50,7 @@
       <!-- Column แสดงตะกร้า--------------------------------------------------->
       <div class="column is-3 pt-6 pl-0 pr-5">
         <div style="display: flex; justify-content: space-between">
-          <span class="is-size-4 mb-4">
-            Your Order {{ totalOrder }} items</span>
+          <span class="is-size-4 mb-4 has-text-dark"> Your order {{totalOrder}} items</span>
           <a class="is-danger mb-4 button">Clear</a>
         </div>
         <!-- Card element start here ------------------------------------------>
@@ -56,24 +58,32 @@
           <div class="card-content p-0">
             <div class="columns" v-for="item in menus" :key="item.id">
               <template v-if="item.quantity">
-              <div class="column is-half">
-                <img class="image is-fullwidth" :src="item.image" alt="" />
-              </div>
-              <div class="column pt-5">
-                <div class="has-text-left">
-                  <p>{{ item.menu_name }}</p>
-                  <div class="columns mt-5">
-                    <div class="column">
-                      <p class="has-text-danger">{{ item.sale_price }} ฿</p>
-                    </div>
-                    <div class="column">
-                      <p>{{item.quantity}} unit</p>
+                <div class="column is-half">
+                  <img class="image is-fullwidth" :src="item.image" alt="" />
+                </div>
+                <div class="column pt-5">
+                  <div class="has-text-left">
+                    <p>{{ item.menu_name }}</p>
+                    <div class="columns mt-5">
+                      <div class="column">
+                        <p class="has-text-danger">{{ item.sale_price }} ฿</p>
+                      </div>
+                      <div class="column">
+                        <p>{{ item.quantity }} unit</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </template>
             </div>
+            <div class="field" v-if="cart.length">
+                  <p class="has-text-danger">Total Price: {{sumPrice}}</p>
+                  </div>
+              <div class="field" v-if="cart.length">
+                              <button class="button is-warning is-right" style="width: 100%">
+                สั่งอาหาร
+              </button>
+              </div>
           </div>
         </div>
       </div>
@@ -107,11 +117,31 @@ export default {
     return {
       menus: [],
       order: [],
-      totalOrder:0
     };
   },
   mounted() {
     this.getMenus();
+  },
+  computed: {
+    cart() {
+      return this.menus.filter((x) => {
+        return x.quantity > 0;
+      });
+    },
+    sumPrice() {
+      let sum = 0
+       this.cart.map((a) => {
+        sum += a.sale_price * a.quantity;
+      });
+      return sum;
+    },
+    totalOrder(){
+      let total = 0
+      this.cart.map((a)=>{
+        total += a.quantity
+      });
+      return total
+    }
   },
 
   methods: {
@@ -119,23 +149,23 @@ export default {
       axios
         .get("http://localhost:3000", {})
         .then((response) => {
-          this.menus = response.data.map((x)=>{
-            x["quantity"]=0
-            return x
-            });
+          this.menus = response.data.map((x) => {
+            x["quantity"] = 0;
+            return x;
+          });
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    addToOrder(id){
-      let check = this.menus.filter((x)=>{
-        return x.menu_id == id
-      })[0]
-      let index = this.menus.indexOf(check)
-        this.menus[index]["quantity"] += 1
-        this.totalOrder += 1
-    }
-  }
-}
+    addToOrder(id) {
+      let check = this.menus.filter((x) => {
+        return x.menu_id == id;
+      })[0];
+      let index = this.menus.indexOf(check);
+      this.menus[index]["quantity"] += 1;
+      this.totalOrder += 1;
+    },
+  },
+};
 </script>
