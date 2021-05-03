@@ -117,7 +117,7 @@ export default {
   methods: {
     getMenus() {
       axios
-        .get("http://localhost:3000", {})
+        .get("http://localhost:3000/menu", {})
         .then((response) => {
           this.menus = response.data.map((x)=>{
             x["quantity"]=0
