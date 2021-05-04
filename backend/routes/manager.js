@@ -121,4 +121,25 @@ router.post("/manager/:item", async function (req, res, next) {
     conn.release();
   }
 });
+
+router.get("/manager/:table/:id", async function (req, res, next) {
+  console.log(req.params);
+  try {  
+    if(req.params.table === 'sales'){
+      const [rows, fields] = await pool.query(
+        `SELECT * from sale_details join menu using(menu_id) where sale_id=?`, [req.params.id]
+      );
+      return res.json(rows);
+    }
+    else if(req.params.table === 'orders'){
+      const [rows, fields] = await pool.query(
+        `SELECT * from order_items join materials using(mats_id) where order_id=?`, [req.params.id]
+      );
+      return res.json(rows);
+    }
+    
+  } catch (err) {
+    return next(err)
+  }
+});
 exports.router = router;

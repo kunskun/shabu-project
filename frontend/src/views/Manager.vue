@@ -62,30 +62,36 @@
                 <th>Date</th>
                 <th>Income</th>
                 <th></th>
+                
+                <th></th>
               </tr>
             </thead>
             <tbody>             
               <tr v-for="sale in blogs" :key="'sale'+sale.sale_id">
                 <td v-if="del"><input type="checkbox" :name="sale.sale_id" :id="sale.sale_id" v-model="delCol" style="cursor: pointer"></td>
                 <td>{{ sale.sale_id }}</td>
-                <td>{{ sale.date.substring(0,10) }}</td>
-                <td>{{ sale.income.toFixed(2) }}</td>
+                <td>{{ formatDate(sale.date) }}</td>
+                <td>{{ sale.income }}</td>
+                <td>
+                  <button class="button is-light" @click="seeDetail(sale.sale_id)">see more</button>
+                </td>
                 <td @click="editModals(sale)"><i class="fa fa-edit" style="cursor: pointer"></i></td>
               </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <th v-if="del"></th>
+                    <th>Total</th>
                     <th></th>
+                    <th>{{ sumSales }}</th>
                     <th></th>
-                    <th>Sum : {{ sumSales }}</th>
                     <th></th>
                 </tr>
             </tfoot>
           </table>
         </div>
         
-        <!-- Order -->
+        <!-- Order Material -->
         <div class="column is-full my-5" v-if="selectSite === 'orders'">
           <p class="title is-4 has-text-left">Order Material
             <span style="float: right" v-if="!del">
@@ -112,9 +118,12 @@
               <tr v-for="order in blogs" :key="'order'+order.order_id">
                 <td v-if="del"><input type="checkbox" :name="order.order_id" :id="order.order_id"  style="cursor: pointer"></td>
                 <td>{{ order.order_id }}</td>
-                <td>{{ order.buy_date.substring(0,10) }}</td>
+                <td>{{ formatDate(order.buy_date) }}</td>
                 <td>{{ order.mats_name }}</td>
                 <td>{{ order.unit }}</td>
+                <td>
+                  <button class="button is-light" @click="seeDetail(order.order_id)">see more</button>
+                </td>
                 <td  @click="editModals(order)"><i class="fa fa-edit" style="cursor: pointer"></i></td>
               </tr>
             </tbody>
@@ -233,10 +242,10 @@
             <tfoot>
               <tr>
                 <th v-if="del"></th>
+                <th>Total</th>
                 <th></th>
                 <th></th>
-                <th></th>
-                <th>Sum : {{ sumMonthExp }}</th>
+                <th>{{ sumMonthExp }}</th>
                 <td></td>
               </tr>
             </tfoot>
@@ -272,7 +281,7 @@
               <tr v-for="day in blogs" :key="'day'+day.acc_id">
                 <td v-if="del"><input type="checkbox" :name="day.acc_id" :id="day.acc_id" style="cursor: pointer"></td>
                 <td>{{ day.acc_id }}</td>
-                <td>{{ day.acc_date.substring(8,10) }}</td>
+                <td>{{ formatDate(day.acc_date) }}</td>
                 <td class="has-text-success">{{ day.sale_income.toFixed(2) }} </td>
                 <td class="has-text-danger">{{ day.mats_expense.toFixed(2) }} </td>
                 <td>{{ day.tip.toFixed(2) }}</td>
@@ -283,7 +292,7 @@
             <tfoot>
               <tr>
                 <th v-if="del"></th>
-                <th colspan="2" class="has-text-left pl-5">Sum</th>
+                <th colspan="2" class="has-text-left pl-5">Total</th>
                 <th>{{ sumDayIncome }}</th>
                 <th>{{ sumDayExp }}</th>
                 <th>{{ sumDayTip }}</th>
@@ -683,10 +692,74 @@
       </div>
     </div>
 
+    <!-- see detail modal -->
+    <div class="modal" :class="{'is-active': detailModal}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Detail for Order ID: {{ detailId }}</p>
+          <button class="delete" aria-label="close" @click="detailModal = false, clearEdit()"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- for sales -->
+          <table class="table is-striped is-narrow is-hoverable is-fullwidth" v-if="selectSite === 'sales'">
+            <thead>
+              <th>Order ID</th>
+              <th>Name</th>
+              <th>Unit</th>
+              <th>Price</th>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in detailBlog" :key="item.item_id">
+                <td>{{ index+1 }}</td>
+                <td>{{ item.menu_name }}</td>
+                <td>{{ item.unit }}</td>
+                <td>{{ item.price*item.unit }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <th>Total</th>
+              <th></th>
+              <th></th>
+              <th>{{ sumDetail }}</th>
+            </tfoot>
+          </table>
+          <!-- for sales -->
+          <table class="table is-striped is-narrow is-hoverable is-fullwidth" v-if="selectSite === 'orders'">
+            <thead>
+              <th>Order ID</th>
+              <th>Name</th>
+              <th>Unit</th>
+              <th>Price</th>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in detailBlog" :key="item.item_id">
+                <td>{{ index+1 }}</td>
+                <td>{{ item.mats_name }}</td>
+                <td>{{ item.unit }}</td>
+                <td>{{ item.price*item.unit }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <th>Total</th>
+              <th></th>
+              <th></th>
+              <th>{{ sumDetail }}</th>
+            </tfoot>
+          </table>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" >Save changes</button>
+          <button class="button" @click="detailModal = false, clearEdit()">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
   </section>
 </template>
 <script>
 import axios from "axios";
+import moment from 'moment';
 
 export default {
   name: 'manager',
@@ -695,6 +768,7 @@ export default {
     return {
       selectSite: 'sales',
       blogs: [],
+      detailBlog: [],
       saleModal: false,
       newSaleModal: false,
       del: false,
@@ -719,12 +793,19 @@ export default {
       editLname: '',
       editSalary: 0,
       editPosition: '',
+      detailModal: false,
+      detailId: 0,
     };
   },
   mounted() {
     this.getItems();
   },
   methods: {
+    formatDate(value) {
+      if (value) {
+        return moment(String(value)).format('DD-MM-YYYY')
+      }
+    },
     getItems() {
       this.del = false
       axios
@@ -732,6 +813,9 @@ export default {
         .then((response) => {
           console.log(response);
           this.blogs = response.data;
+          // this.blogs.forEach(val => {
+          //   val.date = moment(String(val.date)).format('DD-MM-YYYY')
+          // })
         })
         .catch((err) => {
           console.log(err);
@@ -741,6 +825,37 @@ export default {
       this.editId = 0
       this.editDate = ''
       this.editIncome = 0
+      this.editMatName = ''
+      this.editUnit = 0
+      this.editLeft = 0
+      this.editPrice = 0
+      this.editImage = ''
+      this.editCost = 0
+      this.editDescrip = ''
+      this.editMonth = 0
+      this.editTitle = ''
+      this.editExp = 0
+      this.editTip = 0
+      this.editBalance = 0
+      this.editPhone = ''
+      this.editSupName = ''
+      this.editFname = ''
+      this.editLname = ''
+      this.editSalary = 0
+      this.editPosition = ''
+    },
+    seeDetail(id) {
+      this.detailModal = true
+      this.detailId = id
+      axios
+        .get("http://localhost:3000/manager/"+this.selectSite+"/"+id)
+        .then((response) => {
+          console.log(response);
+          this.detailBlog = response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     editModals(item) {
       this.saleModal = true
@@ -767,7 +882,7 @@ export default {
         this.editId = item.menu_id
         this.editImage = item.image
         this.editMatName = item.menu_name
-        this.editPrice = item.price
+        this.editPrice = item.sale_price
         this.editCost = item.mats_cost
         this.editDescrip = item.description
       }
@@ -848,33 +963,39 @@ export default {
   computed: {
     sumSales() {
       var sum = 0
-      this.blogs.forEach(val => sum += val.income);
+      console.log('start');
+      this.blogs.forEach(val => sum += parseFloat(val.income));
       return sum
     },
     sumMonthExp() {
       var sum = 0
-      this.blogs.forEach(val => sum += val.amount_exp);
-      return sum.toFixed(2)
+      this.blogs.forEach(val => sum += parseFloat(val.amount_exp));
+      return sum
     },
     sumDayIncome() {
       var sum = 0
-      this.blogs.forEach(val => sum += val.sale_income);
-      return sum.toFixed(2)
+      this.blogs.forEach(val => sum += parseFloat(val.sale_income));
+      return sum
     },
     sumDayExp() {
       var sum = 0
-      this.blogs.forEach(val => sum += val.mats_expense);
-      return sum.toFixed(2)
+      this.blogs.forEach(val => sum += parseFloat(val.mats_expense));
+      return sum
     },
     sumDayTip() {
       var sum = 0
-      this.blogs.forEach(val => sum += val.tip);
-      return sum.toFixed(2)
+      this.blogs.forEach(val => sum += parseFloat(val.tip));
+      return sum
     },
     sumDayBalance() {
       var sum = 0
-      this.blogs.forEach(val => sum += val.balance);
-      return sum.toFixed(2)
+      this.blogs.forEach(val => sum += parseFloat(val.balance));
+      return sum
+    },
+    sumDetail() {
+      var sum = 0
+      this.detailBlog.forEach(val => sum += (parseFloat(val.price)*parseFloat(val.unit)));
+      return sum
     }
   },
 };
