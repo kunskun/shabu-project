@@ -38,11 +38,13 @@ const signupSchema = Joi.object({
 })
 
 
-router.get("/user/customer", async function (req, res, next) {
+router.get("/user/customer/:id", async function (req, res, next) {
+    const id = req.params.id
     try {
       const [rows, fields] = await pool.query(
-        `SELECT cus_id from customer where user_id = ?`,[req.body.id]
+        `SELECT * from customer where user_id = ?`,[id]
       );
+      console.log('get from params')
       return res.json(rows);
     } catch (err) {
       return next(err)

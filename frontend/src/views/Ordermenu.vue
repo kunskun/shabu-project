@@ -3,7 +3,7 @@
     <div class="columns">
       <!-- Column แสดงสินค้า--------------------------------------------------------->
       <div class="column is-8 pt-6">
-        <h1 class="is-size-4 mb-4 has-text-dark">All Menu</h1>
+        <h1 class="is-size-4 mb-4 has-text-dark">โปรดเลือกค่ะท่าน {{custinfo.cus_fname}}</h1>
         <div class="container is-max-desktop">
           <div class="is-multiline columns is-variable is-2">
             <!-- Card element start here------------------------------------------>
@@ -50,7 +50,9 @@
       <!-- Column แสดงตะกร้า--------------------------------------------------->
       <div class="column is-3 pt-6 pl-0 pr-5">
         <div style="display: flex; justify-content: space-between">
-          <span class="is-size-4 mb-4 has-text-dark"> Your order {{totalOrder}} items</span>
+          <span class="is-size-4 mb-4 has-text-dark">
+            Your order {{ totalOrder }} items</span
+          >
           <a class="is-danger mb-4 button">Clear</a>
         </div>
         <!-- Card element start here ------------------------------------------>
@@ -77,13 +79,13 @@
               </template>
             </div>
             <div class="field" v-if="cart.length">
-                  <p class="has-text-danger">Total Price: {{sumPrice}}</p>
-                  </div>
-              <div class="field" v-if="cart.length">
-                              <button class="button is-warning is-right" style="width: 100%">
+              <p class="has-text-danger">Total Price: {{ sumPrice }}</p>
+            </div>
+            <div class="field" v-if="cart.length">
+              <button class="button is-warning is-right" style="width: 100%">
                 สั่งอาหาร
               </button>
-              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -117,10 +119,13 @@ export default {
     return {
       menus: [],
       order: [],
+      custinfo: {},
+      userId: 0
     };
   },
   mounted() {
     this.getMenus();
+    this.getUser();
   },
   computed: {
     cart() {
@@ -129,21 +134,20 @@ export default {
       });
     },
     sumPrice() {
-      let sum = 0
-       this.cart.map((a) => {
+      let sum = 0;
+      this.cart.map((a) => {
         sum += a.sale_price * a.quantity;
       });
       return sum;
     },
-    totalOrder(){
-      let total = 0
-      this.cart.map((a)=>{
-        total += a.quantity
+    totalOrder() {
+      let total = 0;
+      this.cart.map((a) => {
+        total += a.quantity;
       });
-      return total
-    }
+      return total;
+    },
   },
-
   methods: {
     getMenus() {
       axios
@@ -158,13 +162,33 @@ export default {
           console.log(err);
         });
     },
+    getUser() {
+      axios
+        .get("http://localhost:3000/user/me", {
+          headers: { Authorization: "Bearer " + localStorage.getItem('token')},
+        })
+        .then((response) => {
+          this.userId = response.data.id
+          this.getCustomer();
+        });
+    },
+    getCustomer() {
+      axios
+        .get("http://localhost:3000/user/customer/"+this.userId)
+        .then((response) => {
+          console.log(response.data);
+          this.custinfo = response.data[0]
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     addToOrder(id) {
       let check = this.menus.filter((x) => {
         return x.menu_id == id;
       })[0];
       let index = this.menus.indexOf(check);
       this.menus[index]["quantity"] += 1;
-      this.totalOrder += 1;
     },
   },
 };
