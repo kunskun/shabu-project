@@ -34,6 +34,11 @@ const routes = [
     name: 'signup',
     component: () => import('../views/Signup.vue') // set owner as path '/'
   },
+  {
+    path: '/comment',
+    name: 'comment',
+    component: () => import('../views/Comment.vue') // set owner as path '/'
+  },
 ]
 
 const router = new VueRouter({
