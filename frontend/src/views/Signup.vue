@@ -82,7 +82,6 @@
                 type="text"
                 v-model="$v.email.$model"
                 :class="{ 'is-danger': $v.email.$error }"
-                
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-envelope"></i>
@@ -153,11 +152,13 @@
             </template>
           </div>
 
-          <button class="button is-primary is-fullwidth" @click="submit">Sign Up</button>
+          <button class="button is-primary is-fullwidth" @click="submit">
+            Sign Up
+          </button>
 
-          <p class="my-3 has-text-dark has-text-left">เคยสมัครไว้แล้วเหรอ? <router-link to="/">
-              Login
-            </router-link></p>
+          <p class="my-3 has-text-dark has-text-left">
+            เคยสมัครไว้แล้วเหรอ? <router-link to="/"> Login </router-link>
+          </p>
         </div>
       </div>
     </div>
@@ -196,9 +197,23 @@ export default {
       mobile: "0633419885",
       first_name: "kball",
       last_name: "kjaja",
+      user_id: 0,
     };
   },
-    methods: {
+  mounted() {
+    this.getUserId();
+  },
+  methods: {
+    getUserId() {
+      axios
+        .get("http://localhost:3000/user")
+        .then((response) => {
+          this.user_id = response.data[0].id+1
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     submit() {
       // Validate all fields
       this.$v.$touch();
@@ -213,19 +228,22 @@ export default {
           mobile: this.mobile,
           first_name: this.first_name,
           last_name: this.last_name,
+          user_id:this.user_id
         };
 
         axios
           .post("http://localhost:3000/user/signup", data)
           .then(() => {
             alert("Sign up Success");
+            this.$router.push({path: '/'})
           })
           .catch((err) => {
-            console.log(err)
+            console.log(err);
           });
       }
     },
   },
+
   validations: {
     email: {
       required: required,

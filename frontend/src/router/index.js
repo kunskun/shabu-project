@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
     alert("You've already logged in")
     next({ path: '/'})
   }
-
+  if(isLoggedIn){
   axios.get("http://localhost:3000/user/me", {
     headers: { Authorization: "Bearer " + token },
   })
@@ -73,6 +73,7 @@ router.beforeEach((to, from, next) => {
 
     }
   })
+}
 
 
   

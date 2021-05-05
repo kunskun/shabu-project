@@ -34,9 +34,33 @@ const signupSchema = Joi.object({
     password: Joi.string().required().custom(passwordValidator),
     confirm_password: Joi.string().required().valid(Joi.ref('password')),
     username: Joi.string().required().min(5).max(20).external(usernameValidator),
+    user_id:Joi.required()
 })
 
 
+router.get("/user/customer", async function (req, res, next) {
+    try {
+      const [rows, fields] = await pool.query(
+        `SELECT cus_id from customer where user_id = ?`,[req.body.id]
+      );
+      return res.json(rows);
+    } catch (err) {
+      return next(err)
+    }
+  });
+
+
+
+router.get("/user", async function (req, res, next) {
+    try {
+      const [rows, fields] = await pool.query(
+        `SELECT id from users order by id desc limit 1`
+      );
+      return res.json(rows);
+    } catch (err) {
+      return next(err)
+    }
+  });
 
 router.post('/user/signup', async (req, res, next) => {
     try {
@@ -55,6 +79,7 @@ router.post('/user/signup', async (req, res, next) => {
     const last_name = req.body.last_name
     const email = req.body.email
     const mobile = req.body.mobile
+    const user_id = req.body.user_id
 
     try {
         await conn.query(
@@ -62,8 +87,8 @@ router.post('/user/signup', async (req, res, next) => {
             [username, password, first_name, last_name, email, mobile]
         )
         await conn.query(
-            'INSERT INTO customer(cus_fname,cus_lname) VALUES (?, ?)',
-            [first_name, last_name]
+            'INSERT INTO customer(cus_fname,cus_lname,user_id) VALUES (?, ?, ?)',
+            [first_name, last_name,user_id]
         )
         conn.commit()
         res.status(201).send()
