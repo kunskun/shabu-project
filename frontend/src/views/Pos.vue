@@ -2,96 +2,62 @@
   <section class="section" id="app">
     <div class="container">
       <div class="columns">
+        <!-- ข้อมูลลูกค้าแต่ละคน -->
         <div class="column is-8">
-          <div class="columns is-multiline">
-            <div
-              class="column is-3"
-              v-for="(order, index) in custOder"
-              :key="'order' + index"
-            >
-              <div class="card">
-                <header class="card-header" style="background-color: #31525b">
-                  <p class="card-header-title has-text-light">
-                    รหัสลูกค้า {{ order.cus_id }}
-                  </p>
-                </header>
-                <div class="card-content" style="padding: 2px">
-                  <div class="content">
-                    <div class="box level py-3 my-1">
-                      <span>ชื่อ: {{ order.cus_fname }}</span>
-                    </div>
-                    <div class="box level py-3 my-1">
-                      <span>
-                        นามสกุล: {{ order.cus_lname }}
-                      </span>
-                    </div>
-                    <div class="box level py-3 my-1">
-                      <span
-                        style="text-decoration: none"
-                      >
-                        status: <a v-if="status='doing'" @click="getDetail(order.cus_id)" class="has-text-success">success</a>
-                      </span>
+          <template v-if="!doing">
+            <template v-if="finished">
+            <div class="columns is-multiline">
+              <div
+                class="column is-3"
+                v-for="(order, index) in custOder"
+                :key="'order' + index"
+              >
+                <div class="card">
+                  <header class="card-header" style="background-color: #31525b">
+                    <p class="card-header-title has-text-light">
+                      รหัสลูกค้า {{ order.cus_id }}
+                    </p>
+                  </header>
+                  <div class="card-content" style="padding: 2px">
+                    <div class="content">
+                      <div class="box level py-3 my-1">
+                        <span>ชื่อ: {{ order.cus_fname }}</span>
+                      </div>
+                      <div class="box level py-3 my-1">
+                        <span> นามสกุล: {{ order.cus_lname }} </span>
+                      </div>
+                      <div class="box level py-3 my-1">
+                        <span style="text-decoration: none">
+                          status:
+                          <a
+                            v-if="
+                              order.cus_id != '111' && order.cus_id != '110'
+                            "
+                            @click="getDetail(order.cus_id)"
+                            class="has-text-warning"
+                            >doing</a
+                          >
+                          <a
+                            v-if="order.cus_id == '110'"
+                            @click="getDetail(order.cus_id)"
+                            class="has-text-info"
+                            >receive</a
+                          >
+                          <a
+                            v-if="order.cus_id == '111'"
+                            @click="getDetail(order.cus_id)"
+                            class="has-text-success"
+                            >finished</a
+                          >
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Sales -->
-          <!-- <div class="column is-full my-5">
-              <table
-                class="table is-striped is-narrow is-hoverable is-fullwidth"
-              >
-                <thead>
-                  <tr>
-                    <th v-if="del"></th>
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Income</th>
-                    <th></th>
-
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="sale in custOder" :key="'sale' + sale.sale_id">
-                    <td v-if="del">
-                      <input
-                        type="checkbox"
-                        :name="sale.sale_id"
-                        :id="sale.sale_id"
-                        v-model="delCol"
-                        style="cursor: pointer"
-                      />
-                    </td>
-                    <td>{{ sale.sale_id }}</td>
-                    <td>{{ formatDate(sale.date) }}</td>
-                    <td>{{ sale.income }}</td>
-                    <td>
-                      <button
-                        class="button is-light"
-                        @click="seeDetail(sale.sale_id)"
-                      >
-                        see more
-                      </button>
-                    </td>
-                    <td @click="editModals(sale)">
-                      <i class="fa fa-edit" style="cursor: pointer"></i>
-                    </td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th v-if="del"></th>
-                    <th>Total</th>
-                    <th></th>
-                    <th>{{ sumSales }}</th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </tfoot>
-              </table>
-            </div> -->
+            </template>
+          </template>
         </div>
         <div class="column is-4">
           <div class="card" style="margin-bottom: 10px">
@@ -102,14 +68,14 @@
               <div class="content">
                 <div class="control">
                   <label class="checkbox"
-                    ><input type="checkbox" />
-                    เฉพาะลูกค้าที่ยังไม่จบรายการอาหาร
+                    ><input type="checkbox" v-model="doing" />
+                    เฉพาะลูกค้าที่ยังได้อาหารไม่ครบ
                   </label>
                 </div>
                 <div class="control level-left">
                   <label class="checkbox"
-                    ><input type="checkbox" />
-                    เฉพาะลูกค้าที่ยังไม่ได้รับเมนู
+                    ><input type="checkbox" v-model="finished"/>
+                    เฉพาะลูกค้าที่ยังไม่ได้จ่ายเงิน
                   </label>
                 </div>
               </div>
@@ -118,7 +84,7 @@
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">รายละเอียดการสั่งอาหาร</p>
-              <p class="has-text-info" style="width:150px;overflow:hidden;height:50px;line-height:50px;">{{orderDetail[0].cus_id}} {{orderDetail[0].cus_fname}} {{orderDetail[0].cus_lname}}</p>
+              <p v-if="orderDetail" class="has-text-info" id="odt"></p>
             </header>
             <div class="card-content" id="conditon" style="padding: 2px">
               <div class="content">
@@ -132,14 +98,14 @@
                   </thead>
                   <tbody>
                     <tr v-for="order in orderDetail" :key="order.id">
-                      <td>{{order.unit}}</td>
-                      <td>{{order.menu_name}}</td>
-                      <td>{{order.price*order.unit}}</td>
+                      <td>{{ order.unit }}</td>
+                      <td>{{ order.menu_name }}</td>
+                      <td>{{ order.price * order.unit }}</td>
                     </tr>
                     <tr>
                       <td colspan="1"></td>
                       <th>ราคารวมทั้งหมด</th>
-                      <td>{{sumSales}} บาท</td>
+                      <td>{{ sumSales }} บาท</td>
                     </tr>
                     <!-- <tr>
                       <td colspan="1"></td>
@@ -190,6 +156,8 @@ export default {
     return {
       custOder: [],
       orderDetail: [],
+      doing: false,
+      finished: true
     };
   },
   mounted() {
@@ -208,24 +176,30 @@ export default {
         });
     },
     getDetail(id) {
-      console.log(id)
+      console.log(id);
       axios
-        .get("http://localhost:3000/pos/"+id)
+        .get("http://localhost:3000/pos/" + id)
         .then((response) => {
           this.orderDetail = response.data;
           console.log(response);
+          this.setHeader();
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    setHeader() {
+      var id = this.orderDetail[0].cus_id;
+      var fname = this.orderDetail[0].cus_fname;
+      var lname = this.orderDetail[0].cus_lname;
+      document.getElementById("odt").innerHTML = id + " " + fname + " " + lname;
     },
   },
   computed: {
     sumSales() {
       var sum = 0;
       console.log("start");
-      this.orderDetail.forEach((val) => (sum +=val.price*val.unit));
-
+      this.orderDetail.forEach((val) => (sum += val.price * val.unit));
       return sum.toFixed(2);
     },
   },
@@ -233,10 +207,16 @@ export default {
 </script>
 
 <style scoped>
-.level{
+.level {
   justify-content: left;
 }
 .card-content {
-    padding: 0.75rem;
+  padding: 0.75rem;
+}
+#odt {
+  width: 150px;
+  overflow: hidden;
+  height: 50px;
+  line-height: 50px;
 }
 </style>
