@@ -11,19 +11,21 @@
               <input
                 class="input"
                 type="text"
+                v-model="$v.username.$model"
+                :class="{ 'is-danger': $v.username.$error }"
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-user"></i>
               </span>
             </div>
-            <!-- <template v-if="$v.username.$error">
+            <template v-if="$v.username.$error">
               <p class="help is-danger" v-if="!$v.username.required">
                 This field is required
               </p>
               <p class="help is-danger" v-if="!$v.username.minLength">
                 Must be at least 5 characters
               </p>
-            </template> -->
+            </template>
           </div>
 
           <div class="field">
@@ -32,12 +34,14 @@
               <input
                 class="input"
                 type="password"
+                v-model="$v.password.$model"
+                :class="{ 'is-danger': $v.password.$error }"
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-lock"></i>
               </span>
             </div>
-            <!-- <template v-if="$v.password.$error">
+            <template v-if="$v.password.$error">
               <p class="help is-danger" v-if="!$v.password.required">
                 This field is required
               </p>
@@ -47,7 +51,7 @@
               <p class="help is-danger" v-if="!$v.password.complex">
                 Password too easy
               </p>
-            </template> -->
+            </template>
           </div>
 
           <div class="field">
@@ -56,16 +60,18 @@
               <input
                 class="input"
                 type="password"
+                v-model="$v.confirm_password.$model"
+                :class="{ 'is-danger': $v.confirm_password.$error }"
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-lock"></i>
               </span>
             </div>
-            <!-- <template v-if="$v.confirm_password.$error">
+            <template v-if="$v.confirm_password.$error">
               <p class="help is-danger" v-if="!$v.confirm_password.sameAs">
                 Password not match
               </p>
-            </template> -->
+            </template>
           </div>
 
           <div class="field">
@@ -74,17 +80,20 @@
               <input
                 class="input"
                 type="text"
+                v-model="$v.email.$model"
+                :class="{ 'is-danger': $v.email.$error }"
+                
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-envelope"></i>
               </span>
             </div>
-            <!-- <template v-if="$v.email.$error">
+            <template v-if="$v.email.$error">
               <p class="help is-danger" v-if="!$v.email.required">
                 This field is required
               </p>
               <p class="help is-danger" v-if="!$v.email.email">Invalid Email</p>
-            </template> -->
+            </template>
           </div>
 
           <div class="field">
@@ -93,19 +102,21 @@
               <input
                 class="input"
                 type="text"
+                v-model="$v.mobile.$model"
+                :class="{ 'is-danger': $v.mobile.$error }"
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-mobile"></i>
               </span>
             </div>
-            <!-- <template v-if="$v.mobile.$error">
+            <template v-if="$v.mobile.$error">
               <p class="help is-danger" v-if="!$v.mobile.required">
                 This field is required
               </p>
               <p class="help is-danger" v-if="!$v.mobile.mobile">
                 Invalid Mobile Number
               </p>
-            </template> -->
+            </template>
           </div>
 
           <div class="field">
@@ -114,13 +125,15 @@
               <input
                 class="input"
                 type="text"
+                v-model="$v.first_name.$model"
+                :class="{ 'is-danger': $v.first_name.$error }"
               />
             </div>
-            <!-- <template v-if="$v.first_name.$error">
+            <template v-if="$v.first_name.$error">
               <p class="help is-danger" v-if="!$v.first_name.required">
                 This field is required
               </p>
-            </template> -->
+            </template>
           </div>
 
           <div class="field">
@@ -129,16 +142,18 @@
               <input
                 class="input"
                 type="text"
+                v-model="$v.last_name.$model"
+                :class="{ 'is-danger': $v.last_name.$error }"
               />
             </div>
-            <!-- <template v-if="$v.last_name.$error">
+            <template v-if="$v.last_name.$error">
               <p class="help is-danger" v-if="!$v.last_name.required">
                 This field is required
               </p>
-            </template> -->
+            </template>
           </div>
 
-          <button class="button is-primary is-fullwidth">Sign Up</button>
+          <button class="button is-primary is-fullwidth" @click="submit">Sign Up</button>
 
           <p class="my-3 has-text-dark has-text-left">เคยสมัครไว้แล้วเหรอ? <router-link to="/">
               Login
@@ -150,6 +165,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import {
   required,
   email,
@@ -173,14 +189,42 @@ function complexPassword(value) {
 export default {
   data() {
     return {
-      username: "",
-      password: "",
-      confirm_password: "",
-      email: "",
-      mobile: "",
-      first_name: "",
-      last_name: "",
+      username: "ball9988",
+      password: "Ball9988",
+      confirm_password: "Ball9988",
+      email: "k@gmail.com",
+      mobile: "0633419885",
+      first_name: "kball",
+      last_name: "kjaja",
     };
+  },
+    methods: {
+    submit() {
+      // Validate all fields
+      this.$v.$touch();
+
+      // เช็คว่าในฟอร์มไม่มี error
+      if (!this.$v.$invalid) {
+        let data = {
+          username: this.username,
+          password: this.password,
+          confirm_password: this.confirm_password,
+          email: this.email,
+          mobile: this.mobile,
+          first_name: this.first_name,
+          last_name: this.last_name,
+        };
+
+        axios
+          .post("http://localhost:3000/user/signup", data)
+          .then(() => {
+            alert("Sign up Success");
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+      }
+    },
   },
   validations: {
     email: {
@@ -197,6 +241,7 @@ export default {
       complex: complexPassword,
     },
     confirm_password: {
+      required: required,
       sameAs: sameAs("password"),
     },
     username: {

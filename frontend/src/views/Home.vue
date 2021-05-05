@@ -41,6 +41,7 @@
 
 <script>
 // @ is an alias to /src
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -50,17 +51,29 @@ export default {
     };
   },
   methods: {
-    submit(){
-      if(this.username == 'exCustomer'){
-        this.$router.push({ path: "/ordermenu" });
-      }
-      if(this.username == 'exManager'){
-        this.$router.push({ path: "/manager" });
-      }
-      if(this.username == 'exEmployee'){
-        this.$router.push({ path: "/manager" });
-      }
-    }
+     submit () {
+       const data = {
+         username: this.username,
+         password: this.password
+       }
+ 
+       axios.post('http://localhost:3000/user/login/', data)
+         .then(res => {
+           const token = res.data.token                                
+           localStorage.setItem('token', token)
+           this.$emit('auth-change')
+           if(res.data.role == "customer"){
+           this.$router.push({path: '/ordermenu'})
+           }
+           else if(res.data.role == "admin"){
+             this.$router.push({path: '/manager'})
+           }
+         })
+         .catch(error => {
+           this.error = error.response.data
+           console.log(error.response.data)
+         })
+     }
   }
 }
 </script>

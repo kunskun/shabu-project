@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import axios from 'axios'
 Vue.use(VueRouter)
 
 const routes = [
@@ -12,6 +12,7 @@ const routes = [
   {
     path: '/manager',
     name: 'Manager',
+    meta: { login: true },
     component: () => import('../views/Manager.vue') // set owner as path '/'
   },
   {
@@ -45,6 +46,38 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = !!localStorage.getItem('token')
+  const token = localStorage.getItem('token')
+
+  if (to.meta.login && !isLoggedIn) {
+    alert('Please login first!')
+    next({ path: '/' })
+  }
+
+  if (to.meta.guess && isLoggedIn) {
+    alert("You've already logged in")
+    next({ path: '/'})
+  }
+
+  axios.get("http://localhost:3000/user/me", {
+    headers: { Authorization: "Bearer " + token },
+  })
+  .then(res => {
+    console.log(res.data)
+    if(to.meta.login && res.data.role!='admin'){
+      alert('admin only')
+      next({ path: '/ordermenu' })
+
+    }
+  })
+
+
+  
+
+  next()
 })
 
 export default router
