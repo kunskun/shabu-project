@@ -8,10 +8,7 @@
       style="background-color: #31525b"
     >
       <div class="navbar-brand" style="background-color: #31525b">
-        <a class="navbar-item" href="http://localhost:8080/" v-if="!user">
-          <img src="./assets/logo.png" width="112" height="28" />
-        </a>
-        <a class="navbar-item" href="http://localhost:8080/ordermenu" v-if="user">
+        <a class="navbar-item" href="http://localhost:8080/">
           <img src="./assets/logo.png" width="112" height="28" />
         </a>
       </div>

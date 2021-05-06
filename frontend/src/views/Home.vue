@@ -1,7 +1,7 @@
 <template>
   <div class="container is-fluid" style="margin-top: 50px">
     <div class="columns is-centered mt-5">
-      <div class="column is-8">
+      <div class="column is-6">
         <div id="example">
           <p class="title">Shabu Restaurant</p>
           <carousel-3d
@@ -17,11 +17,8 @@
             </slide>
           </carousel-3d>
         </div>
-          <button class="button is-large  my-5 has-background-warning size-5" 
-          style="width:60%"
-          onclick="location.href='/ordermenu';">สั่งเลย !!</button>
       </div>
-      <div class="column is-4" v-if="user">
+      <div class="column is-4" v-if="isToken">
         <h1 class="title has-text-center">
           <span class="icon mr-3">
             <i class="fa fa-user"></i>
@@ -46,9 +43,18 @@
             <p class="subtitle">{{user.role}}</p>
           </div>
         </div>
+            <div class="field">
+            <button style="width:100%" class="button is-medium p-5 is-link" onclick="location.href='/ordermenu'">สั่งเลย</button>
+            </div>
+            <div class="field">
+              <div class="buttons">
+            <button style="width:49%" v-if="user.role=='admin'" class="button is-medium p-5 is-success"  onclick="location.href='/manager'">จัดการร้าน</button>
+            <button style="width:49%" v-if="user.role=='admin' || user.role=='employee'" class="button is-medium p-5 is-info" onclick="location.href='/pointofsell'">POS</button>
+            </div>
+            </div>
       </div>
 
-      <div class="column is-4" v-if="!user">
+      <div class="column is-4" v-if="!isToken">
         <h1 class="title has-text-left">เข้าสู่ระบบ</h1>
         <!-- Login form -->
         <div class="field">
@@ -118,6 +124,14 @@ export default {
         },
       ],
     };
+  },
+  computed:{
+    isToken(){
+      if(localStorage.getItem('token')){
+        return true
+      }
+      else{return false}
+    }
   },
   mounted() {
     this.getUser();
