@@ -116,6 +116,9 @@ export default {
       localStorage.clear();
       this.user = null;
       this.$router.push({ path: "/" });
+      if(window.location.href == "http://localhost:8080/"){
+        window.location.reload()
+      }
     },
   },
 };

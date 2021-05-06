@@ -17,9 +17,38 @@
             </slide>
           </carousel-3d>
         </div>
+          <button class="button is-large  my-5 has-background-warning size-5" 
+          style="width:60%"
+          onclick="location.href='/ordermenu';">สั่งเลย !!</button>
       </div>
-      
-      <div class="column is-4">
+      <div class="column is-4" v-if="user">
+        <h1 class="title has-text-center">
+          <span class="icon mr-3">
+            <i class="fa fa-user"></i>
+          </span>
+          ข้อมูลผู้ใช้
+        </h1>
+        <div class="columns my-2">
+          <div class="column is-6 has-text-right">
+            <p class="subtitle">Customer ID:</p>
+            <p class="subtitle">Name:</p>
+            <p class="subtitle">Point:</p>
+            <p class="subtitle">Email:</p>
+            <p class="subtitle">Phone:</p>
+            <p class="subtitle">Role:</p>
+          </div>
+          <div class="column is-6 has-text-left">
+            <p class="subtitle">{{custinfo.cus_id}}</p>
+            <p class="subtitle">{{user.first_name}} {{user.last_name}}</p>
+            <p class="subtitle">{{custinfo.point}}</p>
+            <p class="subtitle">{{user.email}}</p>
+            <p class="subtitle">{{user.mobile}}</p>
+            <p class="subtitle">{{user.role}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4" v-if="!user">
         <h1 class="title has-text-left">เข้าสู่ระบบ</h1>
         <!-- Login form -->
         <div class="field">
@@ -67,6 +96,8 @@ export default {
       username: "",
       password: "",
       error: "",
+      user: "",
+      custinfo: "",
       slides: [
         {
           image:
@@ -88,8 +119,31 @@ export default {
       ],
     };
   },
-
+  mounted() {
+    this.getUser();
+    this.getCustomer();
+  },
   methods: {
+    getUser() {
+      axios
+        .get("http://localhost:3000/user/me", {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        })
+        .then((response) => {
+          this.user = response.data;
+          this.getCustomer();
+        });
+    },
+    getCustomer() {
+      axios
+        .get("http://localhost:3000/user/customer/" + this.user.id)
+        .then((response) => {
+          this.custinfo = response.data[0];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     submit() {
       const data = {
         username: this.username,
@@ -102,13 +156,14 @@ export default {
           const token = res.data.token;
           localStorage.setItem("token", token);
           this.$emit("auth-change");
-          if (res.data.role == "customer") {
-            this.$router.push({ path: "/ordermenu" });
-          } else if (res.data.role == "admin") {
-            this.$router.push({ path: "/manager" });
-          } else if (res.data.role == "employee") {
-            this.$router.push({ path: "/pointofsell" });
-          }
+          window.location.reload();
+          // if (res.data.role == "customer") {
+          //   this.$router.push({ path: "/ordermenu" });
+          // } else if (res.data.role == "admin") {
+          //   this.$router.push({ path: "/manager" });
+          // } else if (res.data.role == "employee") {
+          //   this.$router.push({ path: "/pointofsell" });
+          // }
         })
         .catch((error) => {
           this.error = error.response.data;
