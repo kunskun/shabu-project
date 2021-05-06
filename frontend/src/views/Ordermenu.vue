@@ -84,7 +84,11 @@
               <p class="has-text-danger">Total Price: {{ sumPrice }}</p>
             </div>
             <div class="field" v-if="cart.length">
-              <button class="button is-warning is-right" style="width: 100%">
+              <button
+                @click="orderFood()"
+                class="button is-warning is-right"
+                style="width: 100%"
+              >
                 สั่งอาหาร
               </button>
             </div>
@@ -123,12 +127,12 @@ export default {
       order: [],
       custinfo: {},
       userId: 0,
+      saleId: 0,
     };
   },
   mounted() {
     this.getMenus();
     this.getUser();
-    this.getSaleId();
   },
   computed: {
     cart() {
@@ -172,7 +176,7 @@ export default {
         })
         .then((response) => {
           this.userId = response.data.id;
-          console.log('userid',this.userId)
+          console.log("userid", this.userId);
           this.getCustomer();
         });
     },
@@ -181,16 +185,6 @@ export default {
         .get("http://localhost:3000/user/customer/" + this.userId)
         .then((response) => {
           this.custinfo = response.data[0];
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getSaleId(){
-      axios
-        .get("http://localhost:3000/saleid")
-        .then((response) => {
-          console.log(response.data);
         })
         .catch((err) => {
           console.log(err);
@@ -211,9 +205,8 @@ export default {
         } else {
           console.log("ใจโลเล");
         }
-      }
-      else{
-        alert('ยังไม่มีการเลือกออเดอร์')
+      } else {
+        alert("ยังไม่มีการเลือกออเดอร์");
       }
     },
     addToOrder(id) {
@@ -222,6 +215,56 @@ export default {
       })[0];
       let index = this.menus.indexOf(check);
       this.menus[index]["unit"] += 1;
+    },
+    ///กดสั่งอาหาร
+    orderFood() {
+      if(this.saleId==0){
+        this.sales()
+      }
+      else{
+        this.addSaleDetails()
+      }
+    },
+    //เพิ่มรายการการซื้อ
+    sales(){
+      axios
+        .post("http://localhost:3000/ordermenu", {
+          income:this.sumPrice, 
+          emp_id: 2,
+          cus_id:this.custinfo.cus_id
+        })
+        .then(() => {
+          alert("สั่งสำเร็จ");
+          this.getSaleId()
+        })
+        .catch((e) => console.log(e.response.data));
+    },
+    getSaleId() {
+      axios
+        .get("http://localhost:3000/saleid/"+this.custinfo.cus_id)
+        .then((response) => {
+          this.saleId = response.data[0].sale_id;
+          console.log("sale_id:", this.saleId);
+          this.addSaleDetails()
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    addSaleDetails() {
+      this.cart.forEach(c => {
+        axios
+        .post("http://localhost:3000/details", {
+          unit: c.unit,
+          price: c.sale_price,
+          sale_id: this.saleId,
+          menu_id: c.menu_id
+        })
+        .then(() => {
+          console.log('Add detail success')
+        })
+        .catch((e) => console.log(e.response.data));
+      });
     },
   },
 };

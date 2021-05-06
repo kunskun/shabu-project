@@ -33,24 +33,9 @@
                           <span style="text-decoration: none">
                             status:
                             <a
-                              v-if="
-                                order.cus_id != '111' && order.cus_id != '110'
-                              "
-                              @click="getDetail(order.cus_id,formatDate(order.date))"
+                              @click="getDetail(order.sale_id)"
                               class="has-text-warning"
-                              >doing</a
-                            >
-                            <a
-                              v-if="order.cus_id == '110'"
-                              @click="getDetail(order.cus_id,formatDate(order.date))"
-                              class="has-text-info"
-                              >receive</a
-                            >
-                            <a
-                              v-if="order.cus_id == '111'"
-                              @click="getDetail(order.cus_id,formatDate(order.date))"
-                              class="has-text-success"
-                              >finished</a
+                              >{{order.status}}</a
                             >
                           </span>
                         </div>
@@ -159,10 +144,10 @@ export default {
           console.log(err);
         });
     },
-    getDetail(id,date) {
+    getDetail(id) {
       console.log(id);
       axios
-        .get("http://localhost:3000/pos/" + id+"/"+date)
+        .get("http://localhost:3000/pos/"+id)
         .then((response) => {
           this.orderDetail = response.data;
           console.log(response);
