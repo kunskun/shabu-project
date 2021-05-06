@@ -184,14 +184,14 @@ router.delete("/manager/:table/:id", async function (req, res, next) {
         }
     }
     else if(req.params.table === 'orders'){
-        const [rows, fields] = await conn.query("DELETE FROM order_items WHERE order_id = ?", [req.params.id]);
-        const [rows2, fields2] = await conn.query("DELETE FROM orders WHERE order_id = ?", [req.params.id]);
-        if (rows.affectedRows === 1 && rows2.affectedRows === 1) {
-          await conn.commit();
-          res.status(204).send();
-        } else {
-          throw "Cannot delete the selected blog";
-        }
+      const [rows, fields] = await conn.query("DELETE FROM order_items WHERE order_id = ?", [req.params.id]);
+      const [rows2, fields2] = await conn.query("DELETE FROM orders WHERE order_id = ?", [req.params.id]);
+      if (rows.affectedRows === 1 && rows2.affectedRows === 1) {
+        await conn.commit();
+        res.status(204).send();
+      } else {
+        throw "Cannot delete the selected blog";
+      }
     }
     else if(req.params.table === 'materials'){
         const [rows2, fields2] = await conn.query("DELETE FROM materials WHERE mats_id = ?", [req.params.id]);

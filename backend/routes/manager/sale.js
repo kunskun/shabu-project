@@ -42,8 +42,8 @@ router.get("/manager/sales/:id", async function (req, res, next) {
     try {  
         const [rows, fields] = await pool.query(
             `SELECT * from sale_details left outer join menu using(menu_id) where sale_id=?`, [req.params.id]
-    );
-    return res.json(rows);
+        );
+        return res.json(rows);
 
     } catch (err) {
         return next(err)

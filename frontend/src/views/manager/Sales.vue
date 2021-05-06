@@ -131,7 +131,6 @@ export default {
   name: "sales",
   data: function () {
     return {
-      selectSite: "sales",
       blogs: [],
       detailBlog: [],
       detailModal: false,
@@ -143,7 +142,6 @@ export default {
   },
   methods: {
     getItems() {
-      console.log("Create Sale");
       axios
         .get("http://localhost:3000/manager/sales")
         .then((res) => {
@@ -173,14 +171,14 @@ export default {
         return moment(String(value)).format('DD-MM-YYYY')
       }
     },
-    editItem(item) {
-      this.editModal = true
-      this.editId = item.sale_id
-      this.editDate = item.date.substring(0,10)
-      this.editIncome = item.income
-    },
+    // editItem(item) {
+    //   this.editModal = true
+    //   this.editId = item.sale_id
+    //   this.editDate = item.date.substring(0,10)
+    //   this.editIncome = item.income
+    // },
     deleteItem(id) {
-      const result = confirm(`Are you sure you want to delete sale at ID `+id);
+      const result = confirm(`Are you sure you want to delete sale ID `+id);
       if (result) {
         axios
           .delete(`http://localhost:3000/manager/sales/`+id)
