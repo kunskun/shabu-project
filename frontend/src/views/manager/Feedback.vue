@@ -19,12 +19,6 @@
           <td>{{ feedback.comment }}</td>
           <td>
             <!-- <i class="fa fa-edit" style="cursor: pointer" @click="editModals(feedback)"></i> -->
-            <i
-              class="fa fa-trash ml-4"
-              aria-hidden="true"
-              style="cursor: pointer; transform: translateY(-1px)"
-              @click="deleteRecord(feedback.record_id)"
-            ></i>
           </td>
         </tr>
       </tbody>
@@ -32,12 +26,36 @@
   </div>
 </template>
     <script>
+    import axios from 'axios'
+    import moment from 'moment'
 export default {
   data() {
       return{
-          
+          blogs:[]
       }
   },
-};
+  mounted(){
+    this.getItems()
+  },
+  methods:{
+        getItems() {
+      console.log("Create Menu");
+      axios
+        .get("http://localhost:3000/manager/feedback")
+        .then((res) => {
+          console.log(res);
+          this.blogs = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  },
+      formatDate(value) {
+      if (value) {
+        return moment(String(value)).format('DD-MM-YYYY')
+      }
+    },
+}
+}
 </script>
     

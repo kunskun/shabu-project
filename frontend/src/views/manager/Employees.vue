@@ -1,7 +1,6 @@
 <template>
     <div class="column is-full mx-1 my-5">
           <p class="title is-4 has-text-left">Employees
-              <button style="float: right" class="button is-primary" @click="newRecord">New Employee</button>
           </p>
           <table class="table is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
@@ -26,22 +25,43 @@
                 <td>{{ emp.salary }}</td>
                 <td>{{ emp.position }}</td>
                 <td>
-                  <i class="fa fa-edit" style="cursor: pointer" @click="editModals(emp)"></i>
-                  <i class="fa fa-trash ml-4" aria-hidden="true" style="cursor: pointer; transform: translateY(-1px)" @click="deleteRecord(emp.emp_id)"></i>
                 </td>
               </tr>
             </tbody>
           </table>
+
         </div>
 </template>
 
-<script>
-
+   <script>
+    import axios from 'axios'
 export default {
-    data() {
-        return{
-            
-        }
+  data() {
+      return{
+          blogs:[],
+          createModal:false,
+      }
+  },
+  mounted(){
+    this.getItems()
+  },
+  methods:{
+        getItems() {
+      console.log("Create Menu");
+      axios
+        .get("http://localhost:3000/manager/employee")
+        .then((res) => {
+          console.log(res);
+          this.blogs = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  },
+      phoneFormat(number) {
+      return number.replace(/[^0-9]/g, '')
+                .replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     },
+}
 }
 </script>
