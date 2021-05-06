@@ -96,21 +96,6 @@
         </div>
       </div>
     </div>
-
-    <footer class="footer has-background-warning mt-5 pt-5 pb-5">
-      <div class="content has-text-centered">
-        <p>
-          <strong>Bulma</strong> by
-          <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is
-          licensed
-          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The
-          website content is licensed
-          <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
-            >CC BY NC SA 4.0</a
-          >.
-        </p>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -198,12 +183,12 @@ export default {
             " รายการ คุณแน่ใจนะ?"
         );
         if (con == true) {
-          console.log("ลบน้า");
+          console.log("ลบแล้ว");
           this.menus.forEach((e) => {
             e.unit = 0;
           });
         } else {
-          console.log("ใจโลเล");
+          console.log("ยกเลิกการลบ");
         }
       } else {
         alert("ยังไม่มีการเลือกออเดอร์");
