@@ -14,16 +14,6 @@ router.get("/", async function (req, res, next) {
     return next(err)
   }
 });
-router.get("/menu", async function (req, res, next) {
-  try {
-    const [rows, fields] = await pool.query(
-      `SELECT * from menu`
-    );
-    return res.json(rows);
-  } catch (err) {
-    return next(err)
-  }
-});
 
 exports.router = router;
 

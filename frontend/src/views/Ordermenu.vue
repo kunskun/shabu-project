@@ -3,7 +3,9 @@
     <div class="columns">
       <!-- Column แสดงสินค้า--------------------------------------------------------->
       <div class="column is-8 pt-6">
-        <h1 class="is-size-4 mb-4 has-text-dark">โปรดเลือกค่ะท่าน {{custinfo.cus_fname}}</h1>
+        <h1 class="is-size-4 mb-4 has-text-dark">
+          โปรดเลือกค่ะท่าน {{ custinfo.cus_fname }}
+        </h1>
         <div class="container is-max-desktop">
           <div class="is-multiline columns is-variable is-2">
             <!-- Card element start here------------------------------------------>
@@ -53,13 +55,13 @@
           <span class="is-size-4 mb-4 has-text-dark">
             Your order {{ totalOrder }} items</span
           >
-          <a class="is-danger mb-4 button">Clear</a>
+          <a class="is-danger mb-4 button" @click="deleteCart()">Clear</a>
         </div>
         <!-- Card element start here ------------------------------------------>
         <div class="card mb-4">
           <div class="card-content p-0">
             <div class="columns" v-for="item in menus" :key="item.id">
-              <template v-if="item.quantity">
+              <template v-if="item.unit">
                 <div class="column is-half">
                   <img class="image is-fullwidth" :src="item.image" alt="" />
                 </div>
@@ -71,7 +73,7 @@
                         <p class="has-text-danger">{{ item.sale_price }} ฿</p>
                       </div>
                       <div class="column">
-                        <p>{{ item.quantity }} unit</p>
+                        <p>{{ item.unit }} unit</p>
                       </div>
                     </div>
                   </div>
@@ -120,30 +122,31 @@ export default {
       menus: [],
       order: [],
       custinfo: {},
-      userId: 0
+      userId: 0,
     };
   },
   mounted() {
     this.getMenus();
     this.getUser();
+    this.getSaleId();
   },
   computed: {
     cart() {
       return this.menus.filter((x) => {
-        return x.quantity > 0;
+        return x.unit > 0;
       });
     },
     sumPrice() {
       let sum = 0;
       this.cart.map((a) => {
-        sum += a.sale_price * a.quantity;
+        sum += a.sale_price * a.unit;
       });
       return sum;
     },
     totalOrder() {
       let total = 0;
       this.cart.map((a) => {
-        total += a.quantity;
+        total += a.unit;
       });
       return total;
     },
@@ -154,7 +157,7 @@ export default {
         .get("http://localhost:3000/menu", {})
         .then((response) => {
           this.menus = response.data.map((x) => {
-            x["quantity"] = 0;
+            x["unit"] = 0;
             return x;
           });
         })
@@ -165,30 +168,60 @@ export default {
     getUser() {
       axios
         .get("http://localhost:3000/user/me", {
-          headers: { Authorization: "Bearer " + localStorage.getItem('token')},
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         })
         .then((response) => {
-          this.userId = response.data.id
+          this.userId = response.data.id;
+          console.log('userid',this.userId)
           this.getCustomer();
         });
     },
     getCustomer() {
       axios
-        .get("http://localhost:3000/user/customer/"+this.userId)
+        .get("http://localhost:3000/user/customer/" + this.userId)
         .then((response) => {
-          console.log(response.data);
-          this.custinfo = response.data[0]
+          this.custinfo = response.data[0];
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    getSaleId(){
+      axios
+        .get("http://localhost:3000/saleid")
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    deleteCart() {
+      if (this.totalOrder > 0) {
+        let con = confirm(
+          "หากกดตกลงจะทำการลบออเดอร์ทั้งหมด " +
+            this.totalOrder +
+            " รายการ คุณแน่ใจนะ?"
+        );
+        if (con == true) {
+          console.log("ลบน้า");
+          this.menus.forEach((e) => {
+            e.unit = 0;
+          });
+        } else {
+          console.log("ใจโลเล");
+        }
+      }
+      else{
+        alert('ยังไม่มีการเลือกออเดอร์')
+      }
     },
     addToOrder(id) {
       let check = this.menus.filter((x) => {
         return x.menu_id == id;
       })[0];
       let index = this.menus.indexOf(check);
-      this.menus[index]["quantity"] += 1;
+      this.menus[index]["unit"] += 1;
     },
   },
 };

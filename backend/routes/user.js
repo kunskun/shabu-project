@@ -44,7 +44,6 @@ router.get("/user/customer/:id", async function (req, res, next) {
       const [rows, fields] = await pool.query(
         `SELECT * from customer where user_id = ?`,[id]
       );
-      console.log('get from params')
       return res.json(rows);
     } catch (err) {
       return next(err)
