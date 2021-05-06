@@ -1,5 +1,6 @@
 <template>
-  <div id="app" style="margin-top: 0px">
+  <div id="app" class="Site" style="margin-top: 0px">
+    <main class="Site-content">
     <nav
       class="navbar"
       role="navigation"
@@ -7,13 +8,27 @@
       style="background-color: #31525b"
     >
       <div class="navbar-brand" style="background-color: #31525b">
-        <a class="navbar-item" href="http://localhost:8080/">
+        <a class="navbar-item" href="http://localhost:8080/" v-if="!user">
+          <img src="./assets/logo.png" width="112" height="28" />
+        </a>
+        <a class="navbar-item" href="http://localhost:8080/ordermenu" v-if="user">
           <img src="./assets/logo.png" width="112" height="28" />
         </a>
       </div>
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <router-link
+                to="/comment"
+                class="button"
+                style="background-color: #31525b; color: white"
+              >
+                แสดงความคิดห็น
+              </router-link>
+            </div>
+          </div>
           <div class="navbar-item" v-if="!user">
             <div class="buttons">
               <router-link
@@ -40,7 +55,7 @@
                   src="https://www.pngfind.com/pngs/m/93-938050_png-file-transparent-white-user-icon-png-download.png"
                 />
               </figure>
-              <span class="pl-3 has-text-white" 
+              <span class="pl-3 has-text-white"
                 >{{ user.first_name }} {{ user.last_name }}</span
               >
             </a>
@@ -53,7 +68,19 @@
       </div>
     </nav>
     <router-view :key="$route.fullPath" @auth-change="onAuthChange" />
+    </main>
+               <footer style="background-color: #31525b;padding: 3rem 1.5rem 3rem;">
+  <div class="content has-text-centered">
+    <p>
+      Bulma by Jeremy Thomas. The source code is licensed
+      MIT. The website content
+      is licensed CC BY NC SA 4.0.
+    </p>
   </div>
+</footer>
+  </div>
+  
+  
 </template>
 
 <script>
@@ -85,11 +112,11 @@ export default {
           this.user = res.data;
         });
     },
-    logOut(){
-       localStorage.clear()
-       this.user = null
-       this.$router.push({path: '/'})
-     }
+    logOut() {
+      localStorage.clear();
+      this.user = null;
+      this.$router.push({ path: "/" });
+    },
   },
 };
 </script>
@@ -108,5 +135,14 @@ export default {
 .button {
   background-color: #31525b;
   color: white;
+}
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-content {
+  flex: 1;
 }
 </style>
