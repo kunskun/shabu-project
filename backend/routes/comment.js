@@ -15,9 +15,9 @@ router.post('/comment',async function(req, res, next){
 
   try {
     let results = await conn.query(
-      "INSERT INTO feedback(name,comment,date) " +
-      "VALUES(?, ?, ?);",
-      [name, comment, fulldate]
+      "INSERT INTO feedback(name,comment,date,cus_id) " +
+      "VALUES(?, ?, ?, ?);",
+      [name, comment, fulldate,req.body.id]
     );
     await conn.commit();
     res.send("success!");

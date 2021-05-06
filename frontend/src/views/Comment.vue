@@ -46,16 +46,49 @@ export default({
     return {
       commentOwner:"",
       commentContent:"",
+      user:"",
+      custinfo:"",
     };
+  },
+      mounted() {
+    this.getUser();
+    this.getCustomer();
   },
   methods:{
       submitComment(){
+        let custId = null
+        if(this.user){
+         custId = this.custinfo.cus_id
+        }
+        
         axios
-        .post("http://localhost:3000/comment",{name:this.commentOwner,comment:this.commentContent})
-        .then(() => this.$router.push({name: 'ordermenu'}))
+        .post("http://localhost:3000/comment",{name:this.commentOwner,comment:this.commentContent,id:custId })
+        .then((res) => {
+          alert(res.data)
+          this.$router.push({name: 'ordermenu'})
+          })
         .catch((e) => console.log(e.response.data));
-
-      }
+      },
+          getUser() {
+      axios
+        .get("http://localhost:3000/user/me", {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        })
+        .then((response) => {
+          this.user = response.data;
+          this.getCustomer();
+        });
+    },
+    getCustomer() {
+      axios
+        .get("http://localhost:3000/user/customer/" + this.user.id)
+        .then((response) => {
+          this.custinfo = response.data[0];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   }
 })
 </script>
