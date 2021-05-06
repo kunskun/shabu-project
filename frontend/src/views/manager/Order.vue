@@ -9,6 +9,7 @@
             <th>Date</th>
             <th>Name</th>
             <th>Unit</th>
+            <th>Supplier ID</th>
             <th></th>
             <th></th>
           </tr>
@@ -19,6 +20,7 @@
             <td>{{ formatDate(order.buy_date) }}</td>
             <td>{{ order.mats_name }}</td>
             <td>{{ order.unit }}</td>
+            <td>{{ order.supplier_id }}</td>
             <td>
               <button class="button is-light" @click="seeDetail(order.order_id)">
                 see more
@@ -47,7 +49,7 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Detail for Order ID: {{ detailIndex }}</p>
+          <p class="modal-card-title">Detail for Order ID: {{ detailId }}</p>
           <button class="delete" aria-label="close" @click="detailModal = false"></button>
         </header>
         <section class="modal-card-body">
@@ -91,6 +93,7 @@ export default {
       detailBlog: [],
       detailModal: false,
       editModal: false,
+      detailId: 0,
     };
   },
   mounted() {
@@ -115,6 +118,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.detailBlog = response.data;
+          this.detailId = id
         })
         .catch((err) => {
           console.log(err);
@@ -147,6 +151,13 @@ export default {
       }
     },
   },
+  computed:{
+    sumDetail() {
+      var sum = 0
+      this.detailBlog.forEach(val => sum += (parseFloat(val.price)*parseFloat(val.unit)));
+      return sum
+    },
+  }
 };
 </script>
 

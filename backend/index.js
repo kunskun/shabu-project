@@ -22,8 +22,10 @@ const userRouter = require('./routes/user')
 const orderRouter = require('./routes/ordermenu')
 // manager
 const saleRouter = require('./routes/manager/sale')
-const orRouter = require('./routes/manager/order')
+const orderManageRouter = require('./routes/manager/order')
 const matRouter = require('./routes/manager/materials')
+const customerRouter = require('./routes/manager/customer')
+const dayRouter = require('./routes/manager/dayAccount')
 
 app.use(indexRouter.router)
 // app.use(managerRouter.router)  
@@ -34,8 +36,10 @@ app.use(userRouter.router)
 
 // manager
 app.use(saleRouter.router)
-app.use(orRouter.router)
+app.use(orderManageRouter.router)
 app.use(matRouter.router)
+app.use(customerRouter.router)
+app.use(dayRouter.router)
 
 app.listen(3000, () => {
   console.log(`Example app listening at http://localhost:3000`)
