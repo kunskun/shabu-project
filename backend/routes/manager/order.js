@@ -41,8 +41,9 @@ router.get("/manager/orders/:id", async function (req, res, next) {
     console.log(req.params);
     try {  
         const [rows, fields] = await pool.query(
-            `SELECT * from order_items join materials using(mats_id) where order_id=?`, [req.params.search]
+            `SELECT * from order_items join materials using(mats_id) where order_id=?`, [req.params.id]
         );
+        console.log(rows);
         return res.json(rows);
     } catch (err) {
         return next(err)
