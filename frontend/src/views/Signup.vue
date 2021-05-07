@@ -190,13 +190,13 @@ function complexPassword(value) {
 export default {
   data() {
     return {
-      username: "ball9988",
-      password: "Ball9988",
-      confirm_password: "Ball9988",
-      email: "k@gmail.com",
-      mobile: "0633419885",
-      first_name: "kball",
-      last_name: "kjaja",
+      username: "",
+      password: "",
+      confirm_password: "",
+      email: "",
+      mobile: "",
+      first_name: "",
+      last_name: "",
       user_id: 0,
     };
   },

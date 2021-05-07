@@ -3,7 +3,7 @@
     <div class="container">
       <div class="columns">
         <!-- ข้อมูลลูกค้าแต่ละคน -->
-        <div class="column is-8">
+        <div class="column is-8" style="height: 600px; overflow-y: auto; overflow-x: hidden">
           <div class="columns is-multiline">
             <div
               class="column is-3"
@@ -172,7 +172,12 @@
                       <td>{{ order.menu_name }}</td>
                       <td>{{ order.price * order.unit }}</td>
                     </tr>
-                    <tr v-if="orderDetail[0].status == 'Received' || orderDetail[0].status == 'Waiting'">
+                    <tr
+                      v-if="
+                        orderDetail[0].status == 'Received' ||
+                        orderDetail[0].status == 'Waiting'
+                      "
+                    >
                       <td colspan="1"></td>
                       <th>ราคารวมตอนนี้</th>
                       <td>{{ sumSales }} บาท</td>
@@ -185,7 +190,7 @@
                     <tr v-if="orderDetail[0].status == 'Pending'">
                       <td colspan="1"></td>
                       <th>แต้มสะสมรอบนี้</th>
-                      <td>{{ parseInt(sumSales*0.1) }} แต้ม</td>
+                      <td>{{ parseInt(sumSales * 0.1) }} แต้ม</td>
                     </tr>
                     <tr v-if="orderDetail[0].status == 'Finished'">
                       <td colspan="1"></td>
@@ -239,6 +244,9 @@ export default {
     this.getItems();
   },
   methods: {
+    openModal() {
+      this.$refs.modal.showModal();
+    },
     formatDate(value) {
       if (value) {
         return moment(String(value)).format("DD/MM/YYYY");
@@ -267,7 +275,7 @@ export default {
           this.orderDetail = response.data;
           console.log("Get detail", response);
           this.setHeader();
-          this.getItems()
+          this.getItems();
         })
         .catch((err) => {
           console.log(err);
@@ -362,9 +370,12 @@ export default {
           return c.status != "Finished";
         });
       }
-      if (this.end_date !='' && this.start_date !='') {
+      if (this.end_date != "" && this.start_date != "") {
         return this.custOder.filter((c) => {
-          return c.date >= this.formatObj(this.start_date) && c.date <= this.formatObj(this.end_date);
+          return (
+            c.date >= this.formatObj(this.start_date) &&
+            c.date <= this.formatObj(this.end_date)
+          );
         });
       }
       return this.custOder;

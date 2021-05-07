@@ -2,9 +2,9 @@
   <div class="container is-widescreen">
     <div class="columns">
       <!-- Column แสดงสินค้า--------------------------------------------------------->
-      <div class="column is-8 pt-6">
-        <h1 class="is-size-3 mb-4 has-text-dark has-text-left">รายการอาหาร</h1>
-        <div class="container is-max-desktop">
+      <div class="column is-8 pt-6 mb-6 pb-2">
+        <h1 class="is-size-3 mb-4 has-text-dark has-text-left">รายการเมนู</h1>
+        <div class="container is-max-desktop" style="height: 600px; overflow-y: auto; overflow-x: hidden">
           <div class="is-multiline columns is-variable is-2">
             <!-- Card element start here------------------------------------------>
             <div
@@ -53,7 +53,7 @@
       </div>
 
       <!-- Column แสดงตะกร้า--------------------------------------------------->
-      <div class="column is-4 pt-6 pl-0 pr-5">
+      <div class="column is-4 pt-6 pl-0 pr-5" >
         <!-- Card element start here ------------------------------------------>
         <div class="card mb-2">
           <header class="card-header" style="background-color: #31525b">
@@ -61,25 +61,29 @@
               ทั้งหมด {{ totalDetail }} รายการ
             </span>
             <template v-if="detail">
-            <a
-              class="card-header-title is-light mt-1 button"
-              @click="seeDetail()"
-              >ปิดที่ออร์เดอร์สั่งไปแล้ว</a
-            >
+              <a 
+                class="card-header-title is-light mt-1 button"
+                @click="seeDetail()"
+                >ปิดที่ออร์เดอร์สั่งไปแล้ว</a
+              >
             </template>
             <span v-if="!detail" class="card-header-title has-text-light">
               ออร์เดอร์ตอนนี้ {{ totalOrder }} รายการ
             </span>
             <template v-if="!detail">
-              <a class="card-header-title is-dark mt-4 button" @click="seeDetail()"
+              <a
+                class="card-header-title is-dark mt-4 button"
+                @click="seeDetail()"
                 >ดูที่สั่งไปแล้ว</a
-              ><a class="is-primary mb-4 button is-danger mt-4" @click="deleteCart()"
+              ><a
+                class="is-primary mb-4 button is-danger mt-4"
+                @click="deleteCart()"
                 ><i class="fa fa-trash has-text-light is-size-3"></i
               ></a>
             </template>
-            
           </header>
-          <div v-if="!detail" class="card-content p-0">
+          <!-- style="height: 700px; overflow: auto" -->
+          <div v-if="!detail" class="card-content p-0" style="height: 500px; overflow-y: auto; overflow-x: hidden">
             <div class="columns" v-for="item in menus" :key="item.id">
               <template v-if="item.unit">
                 <div class="column is-half">
@@ -111,20 +115,20 @@
                 </div>
               </template>
             </div>
-            <div class="field" v-if="cart.length">
-              <p class="has-text-dark is-size-5">
-                ราคารวมตอนนี้ : {{ sumPrice }} บาท
-              </p>
-            </div>
-            <div class="field" v-if="cart.length">
-              <button
-                @click="orderFood()"
-                class="button is-success is-right"
-                style="width: 100%"
-              >
-                สั่งอาหาร
-              </button>
-            </div>
+          </div>
+          <div class="field" v-if="cart.length">
+            <p class="has-text-dark is-size-5">
+              ราคารวมตอนนี้ : {{ sumPrice }} บาท
+            </p>
+          </div>
+          <div class="field" v-if="cart.length">
+            <button
+              @click="orderFood()"
+              class="button is-success is-right"
+              style="width: 100%"
+            >
+              สั่งอาหาร
+            </button>
           </div>
         </div>
         <div class="card" v-if="detail">
@@ -205,7 +209,7 @@
 
 <script>
 import axios from "axios";
-// @ is an alias to /src
+
 export default {
   name: "Ordermenu",
   data() {
@@ -258,6 +262,21 @@ export default {
     },
   },
   methods: {
+    getProjects(url = "/api/departments") {
+      this.tableData.draw++;
+      axios
+        .get(url, { params: this.tableData })
+        .then((response) => {
+          let data = response.data;
+          if (this.tableData.draw == data.draw) {
+            this.projects = data.data.data;
+            this.configPagination(data.data);
+          }
+        })
+        .catch((errors) => {
+          console.log(errors);
+        });
+    },
     getMenus() {
       axios
         .get("http://localhost:3000/menu", {})
