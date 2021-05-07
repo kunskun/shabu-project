@@ -27,7 +27,7 @@ router.get("/saleid/:id", async function (req, res, next) {
 router.post('/ordermenu', async function (req, res, next) {
     console.log(req.body)
     const d = new Date();
-    const fulldate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate()
+    const fulldate = d.getFullYear() + "-" + (d.getMonth()+1)+ "-" + d.getDate()
     const income = req.body.income
     const emp_id = req.body.emp_id
     const cus_id = req.body.cus_id
