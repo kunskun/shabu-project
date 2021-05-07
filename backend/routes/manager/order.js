@@ -7,7 +7,7 @@ router = express.Router();
 router.get("/manager/orders", async function (req, res, next) {
     try {
         const [rows, fields] = await pool.query(
-            `SELECT * FROM orders join order_items using(order_id) join materials using(mats_id)`
+            `SELECT * FROM orders join order_items using(order_id)`
         )
         return res.json(rows);
     } catch (err) {
@@ -74,9 +74,7 @@ router.post("/manager/orders", async function (req, res, next) {
     await conn.beginTransaction();
   
     try {
-        const [rows, fields] = await pool.query(
-            `SELECT max(order_id) id FROM orders`
-        )
+        const [rows, fields] = await pool.query(`SELECT max(order_id) id FROM orders`)
         let new_id = (rows[0].id)+1
 
         let results = await conn.query(

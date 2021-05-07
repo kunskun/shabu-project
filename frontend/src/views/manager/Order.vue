@@ -9,8 +9,10 @@
           <tr>
             <th>Order ID</th>
             <th>Date</th>
-            <th>Name</th>
+            <!-- <th>Name</th> -->
             <th>Unit</th>
+            <th>Price</th>
+            <th>Total</th>
             <th>Supplier ID</th>
             <th></th>
             <th></th>
@@ -20,14 +22,17 @@
           <tr v-for="order in blogs" :key="order.order_id">
             <td>{{ order.order_id }}</td>
             <td>{{ formatDate(order.buy_date) }}</td>
-            <td>{{ order.mats_name }}</td>
+            <!-- <td>{{ order.mats_name }}</td> -->
             <td>{{ order.unit }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.total_price }}</td>
             <td>{{ order.supplier_id }}</td>
-            <td>
+            
+            <!-- <td>
               <button class="button is-light" @click="seeDetail(order.order_id)">
                 see more
               </button>
-            </td>
+            </td> -->
             <td>
               <!-- <i
                 class="fa fa-edit"
@@ -106,8 +111,8 @@
             <div class="column is-4 has-text-left">Price: <br>
               <input class="input mt-4" type="number" v-model="newPrice">
             </div>
-            <div class="column is-6 has-text-left">Supplier ID: <br>
-              <div class="select is-6 mt-4" style="color: black;">
+            <div class="column is-4 has-text-left">Supplier ID: <br>
+              <div class="select is-full mt-4" style="color: black;">
                 <select v-model="chooseSup">
                   <option disabled hidden selected="selected">Select Supplier</option>
                   <template v-for="sup in supBlog" >
