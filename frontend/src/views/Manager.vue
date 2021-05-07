@@ -31,6 +31,7 @@ import Employees from "./manager/Employees.vue"
 import Feedback from "./manager/Feedback.vue"
 import Supplier from "./manager/Supplier.vue"
 import Menu from "./manager/Menu.vue"
+import User from "./manager/User"
 
 
 export default {
@@ -45,11 +46,12 @@ export default {
     Employees,
     Feedback,
     Supplier,
-    Menu
+    Menu,
+    User
   },
   data() {
     return {
-      tabs:["Sales", "Orders", "Material", "Customer", "DayAccount", "MonthAccount", "Employees", "Feedback", "Supplier", "Menu"],
+      tabs:["Sales", "Orders", "Material", "Customer", "DayAccount", "MonthAccount", "Employees", "Feedback", "Supplier", "Menu","User"],
       selectSite: 'Sales',
     };
   },

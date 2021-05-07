@@ -67,12 +67,32 @@
     <router-view :key="$route.fullPath" @auth-change="onAuthChange" />
     </main>
                <footer style="background-color: #31525b;padding: 3rem 1.5rem 3rem;">
-  <div class="content has-text-centered">
-    <p>
-      Bulma by Jeremy Thomas. The source code is licensed
-      MIT. The website content
-      is licensed CC BY NC SA 4.0.
-    </p>
+  <div class="content">
+    <div class="columns">
+      <div class="column is-4  has-text-left">
+        <h3 class="has-text-light ml-3">Contact Us</h3>
+        <div class="column">
+            <p>
+              นายกฤษกร		 อำนาจสถิตย์ รหัสนักศึกษา 62070006 <br>
+              นายญาณวุฒิ	  ศรีทอง รหัสนักศึกษา 62070051 <br>
+              นายธนายุทธ    กันซัน รหัสนักศึกษา 62070084 
+            </p>
+        </div>
+      </div>
+      <div class="column is-4">
+        <img src="./assets/logo.png" alt="ระบบฐานข้อมูลร้านชาบู" width="70%">
+      </div>
+      <div class="column is-4  has-text-right">
+        <h3 class="has-text-light">Term of Us</h3>
+        <p>
+          ระบบฐานข้อมูลร้านชาบู <br> 
+          โดยนักศึกษาชั้นปีที่ 2 คณะเทคโนโลยีสารสนเทศ <br>
+          สาขาวิชา Software Engineer <br>
+          สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง
+        </p>
+        
+      </div>
+    </div>
   </div>
 </footer>
   </div>

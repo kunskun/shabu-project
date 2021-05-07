@@ -30,6 +30,7 @@ const feedbackRouter = require('./routes/manager/feedback')
 const employeeRouter = require('./routes/manager/employee')
 const monthRouter = require('./routes/manager/monthAccount')
 const menuRouter = require('./routes/manager/menu')
+const userRoleRouter = require('./routes/manager/userrole')
 
 app.use(indexRouter.router)
 // app.use(managerRouter.router)  
@@ -48,6 +49,7 @@ app.use(feedbackRouter.router)
 app.use(employeeRouter.router)
 app.use(monthRouter.router)
 app.use(menuRouter.router)
+app.use(userRoleRouter.router)
 
 app.listen(3000, () => {
   console.log(`Example app listening at http://localhost:3000`)
