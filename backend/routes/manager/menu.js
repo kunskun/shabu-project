@@ -24,7 +24,7 @@ router.put("/manager/deletemenu", async function (req, res, next) {
     console.log(req.body)
     try {
         const [rows, fields] = await pool.query(
-        `update menu set status = 'Deleted' where menu_id = ?`,[req.body.id]        
+        `update menu set status_menu = 'Deleted' where menu_id = ?`,[req.body.id]        
         )
         return res.json(rows);
     } catch (err) {

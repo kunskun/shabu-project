@@ -24,7 +24,7 @@
       </thead>
       <tbody>
         <template v-for="menu in blogs">
-          <tr v-if="menu.status == 'Stayed'" :key="'menu' + menu.menu_id">
+          <tr v-if="menu.status_menu == 'Stayed'" :key="'menu' + menu.menu_id">
             <td>{{ menu.menu_id }}</td>
             <td>
               <img :src="menu.image" :alt="menu.menu_name" width="170px" />
