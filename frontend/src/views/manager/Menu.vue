@@ -109,7 +109,7 @@
           <button
             class="delete"
             aria-label="close"
-            @click="(createModal = false), clearEdit()"
+            @click="(createModal = false)"
           ></button>
         </header>
         <section class="modal-card-body">
@@ -146,7 +146,7 @@
           <button class="button is-success" @click="createMenu">
             Save changes
           </button>
-          <button class="button" @click="(createModal = false), clearEdit()">
+          <button class="button" @click="(createModal = false)">
             Cancel
           </button>
         </footer>

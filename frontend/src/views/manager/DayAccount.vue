@@ -236,6 +236,26 @@ export default {
       this.detailBlog.forEach(val => sum += (parseFloat(val.income)));
       return sum
     },
+    sumDayIncome() {
+      var sum = 0
+      this.blogs.forEach(val => sum += parseFloat(val.sale_income));
+      return sum
+    },
+    sumDayExp() {
+      var sum = 0
+      this.blogs.forEach(val => sum += parseFloat(val.mats_expense));
+      return sum
+    },
+    sumDayTip() {
+      var sum = 0
+      this.blogs.forEach(val => sum += parseFloat(val.tip));
+      return sum
+    },
+    sumDayBalance() {
+      var sum = 0
+      this.blogs.forEach(val => sum += parseFloat(val.balance));
+      return sum
+    },
   }
 }
 </script>

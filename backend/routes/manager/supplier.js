@@ -5,17 +5,17 @@ const pool = require("../../config");
 router = express.Router();
 
 
-// get supplier from db
-router.get("/manager/supplier", async function (req, res, next) {
-    try {
-        const [rows, fields] = await pool.query(
-            `SELECT * FROM supplier` 
-        )
-        return res.json(rows);
-    } catch (err) {
-        return next(err)
-    }
-});
+// // get supplier from db
+// router.get("/manager/supplier", async function (req, res, next) {
+//     try {
+//         const [rows, fields] = await pool.query(
+//             `SELECT phone FROM supplier` 
+//         )
+//         return res.json(rows);
+//     } catch (err) {
+//         return next(err)
+//     }
+// });
 
 
 // delete supplier from db

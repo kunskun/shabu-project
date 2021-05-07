@@ -50,4 +50,52 @@ router.get("/manager/orders/:id", async function (req, res, next) {
     }
 });
 
+router.get("/manager/supplier", async function (req, res, next) {
+    try {  
+        const [rows, fields] = await pool.query(
+            `SELECT * from supplier`
+        );
+        console.log(rows);
+        return res.json(rows);
+    } catch (err) {
+        return next(err)
+    }
+});
+
+router.post("/manager/orders", async function (req, res, next) {
+    const date = req.body.date
+    const name = req.body.name
+    const unit = req.body.unit
+    const price = req.body.price
+    const supid = req.body.supid
+
+    // Begin transaction
+    const conn = await pool.getConnection();
+    await conn.beginTransaction();
+  
+    try {
+        const [rows, fields] = await pool.query(
+            `SELECT max(order_id) id FROM orders`
+        )
+        let new_id = (rows[0].id)+1
+
+        let results = await conn.query(
+            "INSERT INTO orders(buy_date, total_price, supplier_id) VALUES(?, ?, ?);",
+            [date, price*unit, supid]
+        );
+        let results2 = await conn.query(
+            "INSERT INTO order_items(unit, price, order_id) VALUES(?, ?, ?);",
+            [unit, price ,new_id]
+        );
+        await conn.commit();
+        res.send("success!");
+    } catch (err) {
+        console.log(err);
+        await conn.rollback();
+        return res.status(400).json(err);
+    } finally {
+        conn.release();
+    }
+  });
+
 exports.router = router;

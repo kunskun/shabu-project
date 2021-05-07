@@ -110,7 +110,7 @@ export default {
       axios
         .get("http://localhost:3000/manager/supplier")
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
           this.blogs = res.data;
         })
         .catch((err) => {

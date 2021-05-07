@@ -1,7 +1,9 @@
 <template>
   <section>
     <div class="column is-full my-5">
-      <p class="title is-4 has-text-left">Order Material</p>
+      <p class="title is-4 has-text-left">Order Material
+        <button style="float: right" class="button is-primary" @click="newModal = true">New Order</button>
+      </p>
       <table class="table is-striped is-narrow is-hoverable is-fullwidth">
         <thead>
           <tr>
@@ -79,6 +81,50 @@
         <footer class="modal-card-foot"></footer>
       </div>
     </div>
+
+    <!-- new modal -->
+    <div class="modal" :class="{'is-active': newModal}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Add new order</p>
+          <button class="delete" aria-label="close" @click="newModal = false"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="columns" style="color: black;">
+            <div class="column is-6 has-text-left">Date: <br>
+              <input class="input mt-4" type="date" v-model="newDate">
+            </div>
+            <div class="column is-6 has-text-left">Name: <br>
+              <input class="input mt-4" type="text" v-model="newName">
+            </div>
+          </div>
+          <div class="columns" style="color: black;">
+            <div class="column is-4 has-text-left">Unit: <br>
+              <input class="input mt-4" type="number" v-model="newUnit">
+            </div>
+            <div class="column is-4 has-text-left">Price: <br>
+              <input class="input mt-4" type="number" v-model="newPrice">
+            </div>
+            <div class="column is-6 has-text-left">Supplier ID: <br>
+              <div class="select is-6 mt-4" style="color: black;">
+                <select v-model="chooseSup">
+                  <option disabled hidden selected="selected">Select Supplier</option>
+                  <template v-for="sup in supBlog" >
+                    <option :key="sup.sup_id" :value="sup.sup_id">{{sup.sup_name}}</option>
+                  </template>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" @click="saveNewItem">Confirm</button>
+          <button class="button" @click="newModal = false">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
   </section>
 </template>
 
@@ -94,10 +140,18 @@ export default {
       detailModal: false,
       editModal: false,
       detailId: 0,
+      newModal: false,
+      newDate: '',
+      newName: '',
+      newUnit: 0,
+      newPrice: 0,
+      supBlog: [],
+      chooseSup: 0,
     };
   },
   mounted() {
     this.getItems();
+    this.getSup();
   },
   methods: {
     getItems() {
@@ -149,6 +203,29 @@ export default {
             alert(error.response.data.message);
           });
       }
+    },
+    saveNewItem(){
+      // console.log(this.blogs[0]);
+      axios
+      .post("http://localhost:3000/manager/orders", 
+      {date: this.newDate, name: this.newName, unit: this.newUnit, supid: this.chooseSup, price: this.newPrice})
+        .then((res) => {
+          console.log(res);
+          this.getItems()
+          this.newModal = false       
+        })
+        .catch((e) => console.log(e));
+    },
+    getSup() {
+      axios
+        .get("http://localhost:3000/manager/supplier")
+        .then((res) => {
+          console.log(res);
+          this.supBlog = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   computed:{
