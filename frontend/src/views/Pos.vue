@@ -267,6 +267,7 @@ export default {
           this.orderDetail = response.data;
           console.log("Get detail", response);
           this.setHeader();
+          this.getItems()
         })
         .catch((err) => {
           console.log(err);

@@ -1,5 +1,6 @@
 const express = require("express");
 const pool = require("../config");
+router = express.Router();
 
 router.get("/menu", async function (req, res, next) {
     try {
@@ -73,5 +74,33 @@ router.post('/details', async function (req, res, next) {
         conn.release();
     }
 });
+router.put("/waitingstatus/:id", async function (req, res, next) {
+    console.log('update status:',[req.params.id,req.body.status])
+    try {
+      const [rows, fields] = await pool.query(
+        `UPDATE sales
+        SET status = ?
+        WHERE sale_id = ?;`,
+        [req.body.status, req.params.id]
+      );
+      return res.json(rows);
+    } catch (err) {
+      return next(err)
+    }
+  });
+  router.put("/pendingstatus/:id", async function (req, res, next) {
+    console.log('update status:',[req.params.id,req.body.status])
+    try {
+      const [rows, fields] = await pool.query(
+        `UPDATE sales
+        SET status = ?
+        WHERE sale_id = ?;`,
+        [req.body.status, req.params.id]
+      );
+      return res.json(rows);
+    } catch (err) {
+      return next(err)
+    }
+  });
 
 exports.router = router;
