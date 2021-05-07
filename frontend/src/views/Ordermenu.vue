@@ -3,9 +3,7 @@
     <div class="columns">
       <!-- Column แสดงสินค้า--------------------------------------------------------->
       <div class="column is-8 pt-6">
-        <h1 class="is-size-4 mb-4 has-text-dark">
-          โปรดเลือกค่ะท่าน {{ custinfo.cus_fname }}
-        </h1>
+        <h1 class="is-size-3 mb-4 has-text-dark has-text-left">รายการอาหาร</h1>
         <div class="container is-max-desktop">
           <div class="is-multiline columns is-variable is-2">
             <!-- Card element start here------------------------------------------>
@@ -28,9 +26,16 @@
                       <div class="columns">
                         <div class="column">
                           <div
+                            v-if="!detail"
                             class="icon is-size-4"
                             @click="addToOrder(item.menu_id)"
                           >
+                            <i
+                              class="fa fa-shopping-cart has-text-success mr-4"
+                            ></i>
+                            {{ item.sale_price }}.-
+                          </div>
+                          <div v-if="detail" class="icon is-size-4">
                             <i
                               class="fa fa-shopping-cart has-text-success mr-4"
                             ></i>
@@ -49,26 +54,31 @@
 
       <!-- Column แสดงตะกร้า--------------------------------------------------->
       <div class="column is-4 pt-6 pl-0 pr-5">
-        <div style="display: flex; justify-content: space-between">
-          <!-- <label class="icon is-size-6"><i class="fa fa-folder-open has-text-info">ดูรายละเอียดการสั่งง</i></label> -->
-          <span v-if="!detail" class="is-size-4 mb-4 has-text-dark">
-            ออร์เดอร์ตอนนี้ {{ totalOrder }} รายการ
-          </span>
-          <a v-if="!detail" class="is-primary mb-4 button" @click="seeDetail()"
-            >ดูที่สั่งไปแล้ว</a
-          >
-          <span v-if="detail" class="is-size-4 mb-4 has-text-dark">
-            ทั้งหมด {{ totalDetail }} รายการ
-          </span>
-          <a
-            v-if="detail"
-            class="is-primary-light mb-4 button"
-            @click="seeDetail()"
-            >ปิดที่ออร์เดอร์สั่งไปแล้ว</a
-          >
-        </div>
         <!-- Card element start here ------------------------------------------>
         <div class="card mb-2">
+          <header class="card-header" style="background-color: #31525b">
+            <span v-if="detail" class="card-header-title has-text-light">
+              ทั้งหมด {{ totalDetail }} รายการ
+            </span>
+            <template v-if="detail">
+            <a
+              class="card-header-title is-light mt-1 button"
+              @click="seeDetail()"
+              >ปิดที่ออร์เดอร์สั่งไปแล้ว</a
+            >
+            </template>
+            <span v-if="!detail" class="card-header-title has-text-light">
+              ออร์เดอร์ตอนนี้ {{ totalOrder }} รายการ
+            </span>
+            <template v-if="!detail">
+              <a class="card-header-title is-dark mt-4 button" @click="seeDetail()"
+                >ดูที่สั่งไปแล้ว</a
+              ><a class="is-primary mb-4 button is-danger mt-4" @click="deleteCart()"
+                ><i class="fa fa-trash has-text-light is-size-3"></i
+              ></a>
+            </template>
+            
+          </header>
           <div v-if="!detail" class="card-content p-0">
             <div class="columns" v-for="item in menus" :key="item.id">
               <template v-if="item.unit">
@@ -79,11 +89,22 @@
                   <div class="has-text-left">
                     <div class="columns mt-2">
                       <div class="column-is-2">
-                        <p class="title is-4">{{ item.menu_name }}</p>
-                        <p class="has-text-dark ">
+                        <p class="title is-3">{{ item.menu_name }}</p>
+                        <p class="has-text-dark is-size-5">
                           ราคา {{ item.sale_price }} ฿
                         </p>
-                        <p class="has-text-danger">x{{ item.unit }}</p>
+                        <p class="has-text-dark is-size-5">
+                          <i
+                            @click="item.unit += 1"
+                            class="fa fa-plus has-text-danger is-size-6 mr-3"
+                          ></i>
+                          {{ item.unit }}
+                          <i
+                            @click="item.unit -= 1"
+                            class="fa fa-minus has-text-danger is-size-6 ml-3"
+                          ></i>
+                        </p>
+                        <p class="is-size-6"></p>
                       </div>
                     </div>
                   </div>
@@ -91,7 +112,9 @@
               </template>
             </div>
             <div class="field" v-if="cart.length">
-              <p class="has-text-dark is-size-5">ราคารวมตอนนี้ : {{ sumPrice }} บาท</p>
+              <p class="has-text-dark is-size-5">
+                ราคารวมตอนนี้ : {{ sumPrice }} บาท
+              </p>
             </div>
             <div class="field" v-if="cart.length">
               <button
@@ -106,8 +129,33 @@
         </div>
         <div class="card" v-if="detail">
           <header class="card-header">
-            <p class="card-header-title">ออร์เดอร์หมายเลข {{ this.saleId }}</p>
-            <p class="has-text-info"></p>
+            <p v-if="orders[0].status != 'Finished'" class="card-header-title">
+              ออร์เดอร์หมายเลข {{ saleId }}
+            </p>
+            <p v-if="orders[0].status == 'Finished'" class="card-header-title">
+              ใบเสร็จหมายเลข {{ saleId }}
+            </p>
+            <p
+              @click="getDetail(saleId)"
+              v-if="orders[0].status == 'Received'"
+              class="card-header-title has-text-link"
+            >
+              รับอาหารครบแล้ว
+            </p>
+            <p
+              @click="getDetail(saleId)"
+              v-if="orders[0].status == 'Waiting'"
+              class="card-header-title has-text-warning"
+            >
+              กำลังรออาหาร
+            </p>
+            <p
+              @click="getDetail(saleId)"
+              v-if="orders[0].status == 'Pending'"
+              class="card-header-title has-text-primary"
+            >
+              กำลังตรวจสอบการชำระ
+            </p>
           </header>
           <div class="card-content" id="conditon" style="padding: 2px">
             <div class="content">
@@ -136,16 +184,15 @@
           </div>
           <footer v-if="orders.length != 0" class="card-footer">
             <a
-              v-if="orders[0].status == 'Pending'"
-              @click="confirmPay(orders[0].sale_id)"
+              v-if="orders[0].status == 'Received'"
+              @click="pending()"
               class="card-footer-item"
               >ยืนยันการชำระเงิน</a
             >
-            <a
-              v-if="orders[0].status == 'Waiting'"
-              @click="confirmServ(orders[0].sale_id)"
-              class="card-footer-item"
-              >ทำการเสิรฟ์อาหาร</a
+            <a v-if="orders[0].status == 'Finished'" class="card-footer-item"
+              ><i class="fa fa-check has-text-success mr-4 is-size-4"
+                >ชำระเงินเรียบร้อย</i
+              ></a
             >
           </footer>
         </div>
@@ -289,6 +336,7 @@ export default {
       if (this.saleId == 0) {
         this.sales();
       } else {
+        this.waiting();
         this.addSaleDetails();
         this.seeDetail();
       }
@@ -313,6 +361,35 @@ export default {
           this.getSaleId();
         })
         .catch((e) => console.log(e.response.data));
+    },
+    waiting() {
+      axios
+        .put("http://localhost:3000/waitingstatus/" + this.saleId, {
+          status: "Waiting",
+        })
+        .then(() => {
+          console.log("Update status success");
+          this.getDetail(this.saleId);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    pending() {
+      let check = confirm("คุณต้องการชำระเงินใช่ไหม?");
+      if (check) {
+        axios
+          .put("http://localhost:3000/pendingstatus/" + this.saleId, {
+            status: "Pending",
+          })
+          .then(() => {
+            console.log("Pending success");
+            this.getDetail(this.saleId);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
     getSaleId() {
       axios
