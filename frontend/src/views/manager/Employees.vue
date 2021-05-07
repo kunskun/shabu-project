@@ -65,3 +65,9 @@ export default {
 }
 }
 </script>
+
+<style scoped>
+tr {
+  line-height: 3rem;
+}
+</style>
