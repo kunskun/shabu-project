@@ -57,7 +57,7 @@
               >
             </a>
             <div class="navbar-dropdown">
-              <a class="navbar-item">Profile</a>
+              <a class="navbar-item" href="/">Profile</a>
               <a class="navbar-item" @click="logOut">Log out</a>
             </div>
           </div>
@@ -66,7 +66,7 @@
     </nav>
     <router-view :key="$route.fullPath" @auth-change="onAuthChange" />
     </main>
-               <footer style="background-color: #31525b;padding: 3rem 1.5rem 3rem;">
+               <footer style="background-color: #31525b;padding: 3rem 1.5rem 3rem; height:28vh">
   <div class="content">
     <div class="columns">
       <div class="column is-4  has-text-left">
