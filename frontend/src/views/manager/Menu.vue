@@ -13,7 +13,7 @@
     <table class="table is-striped is-narrow is-hoverable is-fullwidth">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>No [ID]</th>
           <th>Image</th>
           <th>Name</th>
           <th>Price</th>
@@ -23,9 +23,9 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="menu in blogs">
+        <template v-for="(menu, index) in blogs">
           <tr v-if="menu.status_menu == 'Stayed'" :key="'menu' + menu.menu_id">
-            <td>{{ menu.menu_id }}</td>
+            <td>{{ index }} <br/> {{ "ID:"+menu.menu_id }}</td>
             <td>
               <img :src="menu.image" :alt="menu.menu_name" width="170px" />
             </td>

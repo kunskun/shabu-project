@@ -12,7 +12,7 @@
               v-for="item in menus"
               :key="item.id"
             >
-              <div class="card">
+              <div class="card" v-if="item.status_menu !== 'Deleted'">
                 <div class="card-image">
                   <figure class="image is-1by1">
                     <img :src="item.image" alt="Placeholder image" />

@@ -1,7 +1,9 @@
 .DS_Store
-node_modules
+**/node_modules
 /dist
 
+# Local mysql config
+backend/config.js
 
 # local env files
 .env.local

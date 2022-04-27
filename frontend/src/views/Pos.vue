@@ -11,15 +11,18 @@
               :key="'order' + index"
             >
               <div class="card">
-                <header class="card-header" style="background-color: #31525b">
+                <header :class="{
+                  'card-header': true,
+                  'has-text-black': true,
+                  'has-background-success': order.status == 'Finished',
+                  'has-background-warning-dark': order.status == 'Waiting',
+                  'has-background-danger': order.status == 'Pending',
+                  'has-background-link': order.status == 'Received'}"
+                  >
                   <p class="has-text-light py-1 px-2">
                     <span
                       :class="{
                         'icon-text': order.status,
-                        'has-text-success': order.status == 'Finished',
-                        'has-text-warning': order.status == 'Waiting',
-                        'has-text-primary': order.status == 'Pending',
-                        'has-text-link': order.status == 'Received',
                       }"
                     >
                       <span>{{ order.sale_id }}</span>
@@ -64,8 +67,8 @@
                           :class="{
                             '': order.status,
                             'has-text-success': order.status == 'Finished',
-                            'has-text-warning': order.status == 'Waiting',
-                            'has-text-primary': order.status == 'Pending',
+                            'has-text-warning-dark': order.status == 'Waiting',
+                            'has-text-danger': order.status == 'Pending',
                             'has-text-link': order.status == 'Received',
                           }"
                           >{{ order.status }}</a
