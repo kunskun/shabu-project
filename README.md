@@ -6,7 +6,7 @@
 ```
 cd frontend
 yarn install
-yarn run serve
+yarn serve
 ```
 
 ### Backend
@@ -15,6 +15,6 @@ yarn run serve
 ```
 cd backend
 yarn install
-yarn run serve
+yarn serve
 ```
 
