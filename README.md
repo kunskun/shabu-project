@@ -1,5 +1,7 @@
 # shabu-project
 
+> Change backend/config.js to your MySQL setting
+
 ### Frontend
 
 #### Download dependencies
