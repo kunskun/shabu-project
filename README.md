@@ -2,19 +2,25 @@
 
 ### Frontend
 
-#### Getting start
+#### Download dependencies
 ```
 cd frontend
 yarn install
+```
+#### Start Frontend
+```
 yarn serve
 ```
 
 ### Backend
 
-#### Getting start
+#### Download dependencies
 ```
 cd backend
 yarn install
+```
+#### Start Backend
+```
 yarn serve
 ```
 
